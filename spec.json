@@ -1,0 +1,14 @@
+{
+  "slug": "caveau",
+  "title": "CAVEAU · Profumeria Artistica",
+  "accent": "#d4af37",
+  "nav": ["PROFUMI", "MAISON", "DISCOVERY KIT", "CONTATTI"],
+  "image_prompt": "Photorealistic cinematic wide shot, 16:9, a grand dark luxury bank-vault corridor with polished black marble floor reflecting warm golden light, walls lined with backlit glass niches each displaying a single artistic perfume bottle, strong central vanishing point leading to a massive circular steel vault door slightly ajar glowing with golden light spilling out, subtle floating dust motes in the light beams, moody dark atmosphere with gold accents, empty space in the centre of frame, no people, no text.",
+  "clip1_prompt": "Continuous single shot, no cuts, steady slow forward dolly motion: the camera glides down a dark luxury vault corridor with polished black marble floors and backlit perfume bottles in glass wall niches, moving toward and then through a massive circular steel vault door that opens, entering an intimate dark chamber, arriving by the end at a single magnificent crystal perfume bottle on a black marble pedestal, illuminated by a golden spotlight from above, golden liquid glowing inside the bottle. Steady cinematic motion, no shake, no cuts.",
+  "clip2_prompt": "Continuous single shot, no cuts, continuing from here: the camera slowly orbits around the glowing crystal perfume bottle on its black marble pedestal, then cranes upward and pulls back revealing an immense circular vault chamber, its curved walls covered floor to ceiling with hundreds of illuminated perfume bottles in golden display niches like a cathedral of fragrances, golden dust particles floating in beams of light. Steady majestic motion, no shake, no cuts.",
+  "eyebrow": "Marcianise · Via Roma 52",
+  "card": "Custodi dei profumi più <em>rari</em> ed invidiati. Ogni fragranza è selezionata come un <em>gioiello</em>, custodita nel nostro caveau e destinata a chi cerca la vera <em>distinzione</em>.",
+  "headline1": ["DENTRO IL", "caveau"],
+  "headline2": ["LA COLLEZIONE", "vi attende"],
+  "marquee": ["Creed", "Xerjoff", "Kilian Paris", "Nishane", "Parfums de Marly", "Initio"]
+}

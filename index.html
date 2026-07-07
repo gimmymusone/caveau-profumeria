@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CAVEAU · Profumeria Artistica — Custodi dei Profumi più Rari</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&family=Fraunces:opsz,wght@9..144,700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --lilac:#b8aad0;        /* Lilac Veil — brand whisper */
+  --ink:#000000;          /* Ink Black — text & lines */
+  --parchment:#f2e9de;    /* Bone White — canvas */
+  --rose:#ddc9c0;         /* Dusty Rose — tonal band */
+  --gold:#d4af37;         /* vecchio oro Caveau — dettagli */
+  --night:#0b0a08;        /* vecchio scuro Caveau */
+  --ivory:#fcfaf1;        /* Ivory Mist — hero UI & panels */
+  --sans:'Manrope',ui-sans-serif,system-ui,sans-serif;
+  --display:'Fraunces',serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--parchment);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.8;
+  letter-spacing:.08px;overflow-x:hidden}
+::selection{background:var(--lilac);color:var(--ink)}
+
+/* ---------- loader ---------- */
+#veil{position:fixed;inset:0;background:var(--parchment);z-index:200;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:18px;transition:opacity .7s ease,visibility .7s}
+#veil.off{opacity:0;visibility:hidden}
+#veil .vlogo{font-family:var(--display);font-weight:700;font-size:clamp(34px,5vw,54px);letter-spacing:.02em;color:var(--ink)}
+#veil .vbar{width:160px;height:1px;background:rgba(0,0,0,.15);overflow:hidden}
+#veil .vbar i{display:block;height:100%;width:40%;background:var(--ink);animation:sweep 1.2s infinite}
+@keyframes sweep{0%{transform:translateX(-100%)}100%{transform:translateX(250%)}}
+
+/* ---------- announcement bar (Brand Whisper) ---------- */
+#promobar{position:fixed;top:0;left:0;right:0;z-index:105;height:34px;overflow:hidden;background:var(--night);border-bottom:1px solid rgba(212,175,55,.4)}
+#promobar .pmsg{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);opacity:0;transition:opacity .6s}
+#promobar .pmsg.on{opacity:1}
+@media(max-width:600px){#promobar .pmsg{font-size:10px;white-space:normal;line-height:1.3;text-align:center;padding:0 8px}}
+
+/* ---------- nav: text-only links ---------- */
+nav{position:fixed;top:34px;left:0;right:0;z-index:100;display:grid;grid-template-columns:1fr auto 1fr;
+  align-items:center;padding:12px clamp(20px,4vw,56px);
+  opacity:0;pointer-events:none;transform:translateY(-6px);transition:opacity .4s,transform .4s,background .35s}
+nav.solid{opacity:1;pointer-events:auto;transform:none;background:var(--parchment);border-bottom:1px solid var(--ink)}
+nav .logo{grid-column:2;display:flex;align-items:center;text-decoration:none}
+nav .logo img{height:clamp(24px,2.4vw,34px);width:auto;display:block}
+nav ul{grid-column:1;grid-row:1;display:flex;gap:clamp(16px,2.6vw,30px);list-style:none}
+nav a.nl{color:var(--ink);text-decoration:none;font-size:12px;letter-spacing:.6px;text-transform:uppercase;transition:color .35s}
+nav a.nl:hover{text-decoration:underline;text-underline-offset:4px}
+@media(max-width:760px){nav ul{display:none}}
+
+/* ---------- hero journey (Hero Void) ---------- */
+#journey{height:420vh;position:relative;background:#000}
+#gl{position:fixed;inset:0;width:100%;height:100%;z-index:1;pointer-events:none}
+#hud{position:fixed;inset:0;z-index:5;pointer-events:none;display:block;transition:opacity .5s}
+#hud.gone{opacity:0}
+.beat{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;opacity:0;will-change:opacity,transform;padding:0 22px}
+.beat .eyebrow{font-size:15px;font-weight:800;letter-spacing:.14em;color:var(--ivory);text-transform:uppercase;margin-bottom:22px;text-shadow:0 1px 12px rgba(0,0,0,.6)}
+/* wordmark: the single 3D-chrome spectacle */
+.splash-title{font-family:var(--display);font-weight:700;line-height:1;
+  font-size:clamp(72px,16vw,220px);letter-spacing:.02em;
+  background:linear-gradient(180deg,#ffffff 0%,#d4d4da 28%,#84848e 47%,#f2f2f5 53%,#5f5f68 72%,#c6c6cd 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 3px 0 rgba(20,20,24,.9)) drop-shadow(0 10px 26px rgba(0,0,0,.65))}
+.splash-sub{font-family:var(--sans);font-size:clamp(15px,1.6vw,20px);font-weight:800;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--ivory);margin-top:26px;text-shadow:0 1px 12px rgba(0,0,0,.6)}
+
+/* glass buttons (porting del componente GlassButton) */
+.glass-btn{position:relative;display:inline-block;padding:15px 36px;border-radius:999px;cursor:pointer;
+  color:#fff;font-size:13px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;
+  background:linear-gradient(rgba(255,255,255,.16),rgba(255,255,255,.06));
+  -webkit-backdrop-filter:blur(14px) saturate(1.5);backdrop-filter:blur(14px) saturate(1.5);
+  border:1px solid rgba(255,255,255,.38);
+  box-shadow:0 10px 32px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.55), inset 0 -10px 20px -12px rgba(255,255,255,.4);
+  transition:transform .3s,background .3s,box-shadow .3s;text-shadow:0 1px 8px rgba(0,0,0,.4)}
+.glass-btn:hover{background:linear-gradient(rgba(255,255,255,.26),rgba(255,255,255,.12));transform:translateY(-2px);
+  box-shadow:0 16px 40px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.65)}
+
+.scrollhint{position:absolute;bottom:36px;left:50%;transform:translateX(-50%)}
+.scrollhint::after{content:none}
+.manifesto{max-width:640px;text-align:center;font-family:var(--sans);color:var(--ivory)}
+.manifesto .m1{font-size:clamp(28px,3.8vw,44px);line-height:1.06;font-weight:800;letter-spacing:-.02em}
+.manifesto .m1 em{font-style:normal;font-weight:700;font-size:inherit;color:var(--ivory)}
+.manifesto .mdia{font-size:12px;margin:18px 0 14px;letter-spacing:.6px;color:var(--ivory)}
+.manifesto .m2{font-size:12px;font-weight:400;letter-spacing:.6px;text-transform:uppercase;color:var(--ivory)}
+.manifesto .m2 b{font-weight:700;color:var(--ivory)}
+.h-big{font-family:var(--sans);line-height:1.2;color:var(--ivory)}
+.h-big .top{display:block;font-size:24px;font-weight:400;letter-spacing:.6px;text-transform:uppercase}
+.h-big .low{display:block;font-size:clamp(34px,4.4vw,56px);font-weight:800;letter-spacing:-.03em;line-height:.92}
+
+/* mid-journey statements over the video */
+.midbeat{max-width:900px;text-align:center;color:var(--ivory)}
+.midbeat .mb-eye{font-size:13px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;margin-bottom:18px;
+  text-shadow:0 1px 12px rgba(0,0,0,.6)}
+.midbeat h2{font-size:clamp(38px,5.6vw,84px);font-weight:800;letter-spacing:-.04em;line-height:.95;
+  text-shadow:0 2px 22px rgba(0,0,0,.55)}
+.midbeat p{font-size:clamp(13px,1.4vw,17px);font-weight:800;letter-spacing:.18em;text-transform:uppercase;
+  margin-top:20px;text-shadow:0 1px 10px rgba(0,0,0,.65)}
+
+#beatFinal{justify-content:flex-start;padding-top:16vh}
+#beatFinal .h-big .top{font-size:clamp(15px,1.7vw,20px);font-weight:800;letter-spacing:.22em;text-transform:uppercase;text-shadow:0 1px 12px rgba(0,0,0,.55)}
+#beatFinal .h-big .low{font-size:clamp(52px,8vw,116px);font-weight:800;letter-spacing:-.04em;line-height:.9;text-shadow:0 2px 20px rgba(0,0,0,.45)}
+#beatFinal .finale-foot{position:absolute;bottom:12vh;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:12px;white-space:nowrap;max-width:92vw}
+#beatFinal .cta{pointer-events:none}
+#beatFinal .cta:hover{opacity:.7}
+@media(max-width:700px){#beatFinal .finale-foot{white-space:normal;text-align:center}}
+
+/* ---------- brands strip ---------- */
+#marquee{position:relative;z-index:10;background:var(--parchment);border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);
+  overflow:hidden;padding:14px 0;white-space:nowrap}
+#marquee .track{display:inline-block;animation:mq 36s linear infinite}
+#marquee span{font-family:var(--sans);font-size:12px;letter-spacing:.6px;text-transform:uppercase;color:var(--ink);margin:0 26px}
+#marquee span i{font-style:normal;color:var(--ink);margin-left:26px;font-size:9px;vertical-align:middle}
+@keyframes mq{to{transform:translateX(-50%)}}
+
+/* ---------- section heads ---------- */
+.sec-head{text-align:center;margin-bottom:46px}
+.sec-head .eyebrow{font-size:12px;font-weight:800;letter-spacing:.14em;color:#a8862e;text-transform:uppercase;margin-bottom:12px}
+.sec-head h2{font-family:var(--sans);font-size:clamp(34px,4.6vw,60px);letter-spacing:-.03em;font-weight:800;line-height:.92}
+.sec-head h2 i{font-style:normal;font-weight:400;letter-spacing:0}
+.sec-head p{color:var(--ink);margin-top:8px;font-size:12px;letter-spacing:.6px}
+
+/* ---------- category picker: DS&D editorial rows ---------- */
+#categorie{position:relative;z-index:10;background:var(--parchment);padding:70px 0 0}
+#categorie .sec-head{padding:0 clamp(18px,4vw,56px)}
+#catgrid{display:flex;flex-direction:column;max-width:none;margin:0}
+.catrow{position:relative;cursor:pointer;display:grid;grid-template-columns:minmax(0,2.1fr) minmax(0,1fr) minmax(0,1fr);
+  gap:5px;border-top:1px solid var(--ink);padding:5px 56px 5px 64px;background:var(--parchment)}
+.catrow:last-child{border-bottom:1px solid var(--ink)}
+.crbig{position:relative;min-height:300px;aspect-ratio:16/9.5;background:var(--ivory);overflow:hidden;
+  display:flex;align-items:center;justify-content:center;padding:4% 8% 12%}
+.crbig img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;
+  mix-blend-mode:multiply;filter:grayscale(1) contrast(1.04);transition:transform .5s}
+.catrow:hover .crbig img{transform:scale(1.03)}
+.crbig h3{position:absolute;left:5%;right:5%;bottom:6%;font-size:clamp(44px,6.6vw,104px);font-weight:800;
+  letter-spacing:-.05em;line-height:.85;color:var(--ink);text-transform:none}
+.crtile{background:var(--ivory);display:flex;align-items:center;justify-content:center;padding:9%;overflow:hidden}
+.crtile img{max-width:100%;max-height:100%;object-fit:contain;mix-blend-mode:multiply;transition:transform .4s}
+/* fascia Set Regalo: tutte le celle identiche in altezza, foto a pieno riempimento */
+.giftrow{align-items:stretch}
+.giftrow .gcell{aspect-ratio:auto;min-height:0;height:100%;padding:0;overflow:hidden;position:relative;
+  background:var(--ivory)}
+.giftrow{grid-auto-rows:clamp(300px,27vw,430px)}
+.giftrow .gcell img{position:absolute;inset:0;width:100%;height:100%;max-width:none;max-height:none;
+  object-fit:cover;mix-blend-mode:normal;filter:none}
+.giftrow .gcell h3{position:absolute;left:5%;bottom:6%;z-index:2;color:#fff;text-shadow:0 2px 14px rgba(0,0,0,.5)}
+
+
+.catrow:hover .crtile img{transform:scale(1.04)}
+.crlabel{position:absolute;left:22px;top:50%;transform:translateY(-50%) rotate(180deg);writing-mode:vertical-rl;
+  font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink);white-space:nowrap}
+.crarrow{position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:44px;font-weight:400;
+  color:var(--ink);line-height:1;transition:transform .3s}
+.catrow:hover .crarrow{transform:translateY(-50%) translateX(4px)}
+@media(max-width:820px){
+  .catrow{grid-template-columns:1fr 1fr;padding:5px 5px}
+  .crbig{grid-column:1/-1;min-height:0;aspect-ratio:16/10}
+  .crlabel,.crarrow{display:none}
+}
+
+
+
+/* ---------- shop band: replica identica DS&D ---------- */
+#shopband{position:relative;z-index:10;display:block;overflow:hidden;line-height:0;
+  border-bottom:1px solid var(--ink);cursor:pointer}
+#shopband .sb-photo{display:block;width:100%;height:auto}
+#shopband .sb-spray{position:absolute;right:25.5%;top:48%;width:0;height:0}
+#shopband .sb-ray{position:absolute;top:0;right:0;transform-origin:100% 50%;white-space:nowrap;overflow:hidden;
+  font-size:14px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--ink);line-height:1}
+#shopband .sb-run{display:inline-block;animation:sbrun 1.6s linear infinite}
+@keyframes sbrun{from{transform:translateX(0)}to{transform:translateX(calc(-1 * var(--unit,130px)))}}
+#shopband .sb-cover{position:absolute;inset:0;display:block;width:100%;height:100%;opacity:0}
+@media(max-width:700px){
+  #shopband .sb-spray{right:10%;top:46%}
+  #shopband .sb-ray{font-size:11px}
+}
+
+/* ---------- catalog ---------- */
+#catalogo{position:relative;z-index:10;background:var(--parchment);padding:80px clamp(18px,4vw,56px) 80px}
+#catalogo:has(> #catalogWrap[hidden]){padding:0}
+#filters{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-bottom:18px}
+#filters input,#filters select{background:transparent;border:none;border-bottom:1px solid var(--ink);color:var(--ink);
+  padding:8px 2px;font-family:var(--sans);font-size:12px;letter-spacing:.6px;outline:none;min-width:200px;border-radius:0}
+#filters input::placeholder{color:rgba(0,0,0,.45)}
+#filters input:focus,#filters select:focus{border-bottom-width:2px}
+#filters input{min-width:min(320px,80vw)}
+#chips{display:flex;flex-wrap:wrap;gap:18px;justify-content:center;margin-bottom:34px}
+.chip{background:transparent;border:none;color:var(--ink);padding:0 0 3px;font-size:12px;
+  letter-spacing:.6px;text-transform:uppercase;cursor:pointer;font-family:var(--sans);font-weight:400;
+  border-bottom:1px solid transparent}
+.chip:hover{border-bottom-color:var(--ink)}
+.chip.on{font-weight:700;border-bottom:1px solid var(--ink)}
+#count{text-align:center;color:var(--ink);font-size:12px;letter-spacing:.6px;margin-bottom:26px;text-transform:uppercase}
+#grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:5px 5px;max-width:1280px;margin:0 auto}
+.pcard{background:transparent;border:none;cursor:pointer;display:flex;flex-direction:column}
+.pcard .ph{aspect-ratio:1/1;background:var(--ivory);display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative}
+.pcard .ph img{width:100%;height:100%;object-fit:contain;mix-blend-mode:multiply;transition:transform .35s}
+.pcard:hover .ph img{transform:scale(1.04)}
+.pcard .ph .noimg{font-family:var(--display);font-size:32px;color:rgba(0,0,0,.25)}
+.badge{position:absolute;top:10px;left:10px;background:transparent;color:var(--lilac);font-size:12px;
+  letter-spacing:.6px;padding:0;text-transform:uppercase;font-weight:400}
+.pcard .pi{padding:10px 2px 18px;display:flex;flex-direction:column;gap:1px;flex:1}
+.pcard .pb{font-size:12px;font-weight:700;letter-spacing:.6px;color:var(--ink);text-transform:uppercase}
+.pcard .pn{font-family:var(--sans);font-size:12px;font-weight:400;line-height:1.5;color:var(--ink);flex:1}
+.pcard .pp{font-size:12px;color:var(--ink)}
+.pcard .pp b{font-weight:700;font-size:12px;color:var(--ink)}
+#more{display:block;margin:44px auto 0;padding:0 0 4px;background:transparent;border:none;border-bottom:1px solid var(--ink);
+  color:var(--ink);font-size:12px;letter-spacing:.6px;text-transform:uppercase;cursor:pointer;font-family:var(--sans)}
+#more:hover{opacity:.6}
+#more[hidden]{display:none}
+
+/* ---------- product modal ---------- */
+#overlay{position:fixed;inset:0;z-index:150;background:rgba(0,0,0,.5);
+  display:flex;align-items:center;justify-content:center;padding:22px;opacity:0;visibility:hidden;transition:.3s}
+#overlay.open{opacity:1;visibility:visible}
+#modal{background:var(--parchment);border:1px solid var(--ink);max-width:940px;width:100%;max-height:92vh;overflow:auto;
+  display:grid;grid-template-columns:1fr 1fr;transform:translateY(18px);transition:transform .35s}
+#overlay.open #modal{transform:none}
+@media(max-width:760px){#modal{grid-template-columns:1fr}}
+#mimg{background:var(--ivory);display:flex;align-items:center;justify-content:center;min-height:320px;padding:26px}
+#mimg img{max-width:100%;max-height:520px;object-fit:contain;mix-blend-mode:multiply}
+#minfo{padding:clamp(26px,4vw,46px);display:flex;flex-direction:column;gap:14px;position:relative}
+#mclose{position:absolute;top:14px;right:16px;background:none;border:none;color:var(--ink);font-size:24px;cursor:pointer;line-height:1}
+#mclose:hover{opacity:.5}
+#mbrand{font-size:12px;font-weight:700;letter-spacing:.6px;color:var(--ink);text-transform:uppercase}
+#mname{font-family:var(--sans);font-size:24px;font-weight:400;line-height:1.4}
+#mcat{font-size:12px;letter-spacing:.6px;color:var(--ink);text-transform:uppercase}
+#msizes{display:flex;flex-wrap:wrap;gap:16px;margin-top:4px}
+.szl{font-size:12px;letter-spacing:.6px;color:var(--ink);text-transform:uppercase;margin-top:8px}
+.size{padding:0 0 3px;border:none;border-bottom:1px solid transparent;background:transparent;color:var(--ink);cursor:pointer;
+  font-size:12px;letter-spacing:.6px;font-family:var(--sans);border-radius:0}
+.size:hover{border-bottom-color:var(--ink)}
+.size.on{font-weight:700;border-bottom:1px solid var(--ink)}
+.size.soldout{color:var(--lilac);text-decoration:line-through;cursor:not-allowed}
+#mprice{font-family:var(--sans);font-weight:700;font-size:24px;color:var(--ink);margin-top:2px}
+#mprice small{font-size:12px;color:var(--ink);font-weight:400;font-family:var(--sans);letter-spacing:.6px;margin-left:10px}
+#mavail{font-size:12px;letter-spacing:.6px}
+#mavail.ok{color:var(--ink)}#mavail.ko{color:var(--lilac)}
+#mlink{margin-top:auto;padding-top:16px;display:flex;gap:26px;flex-wrap:wrap}
+#mlink a{flex:none;text-align:left;padding:0 0 4px;border:none;border-radius:0;text-decoration:none;font-size:12px;letter-spacing:.6px;
+  text-transform:uppercase;min-width:0;border-bottom:1px solid var(--ink);color:var(--ink);transition:opacity .3s}
+#mlink a.buy{background:transparent;color:var(--ink);font-weight:700}
+#mlink a.buy:hover{opacity:.6}
+#mlink a.wa{border-bottom:1px solid var(--ink);color:var(--ink)}
+#mlink a.wa:hover{opacity:.6}
+
+/* ---------- maison ---------- */
+#maison{position:relative;z-index:10;background:var(--rose);border-top:1px solid var(--ink);padding:80px clamp(18px,4vw,56px)}
+.mgrid{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1.2fr 1fr;gap:60px;align-items:start}
+@media(max-width:820px){.mgrid{grid-template-columns:1fr}}
+.mgrid h2{font-family:var(--sans);font-size:clamp(30px,3.6vw,48px);font-weight:800;letter-spacing:-.03em;line-height:.96;margin-bottom:22px}
+.mgrid h2 i{font-style:normal;font-weight:400}
+.mgrid p{color:var(--ink);line-height:1.8;font-size:16px}
+.infobox{padding:32px;display:flex;flex-direction:column;gap:18px;background:var(--ivory)}
+.irow{display:flex;flex-direction:column;gap:2px}
+.irow .il{font-size:12px;font-weight:700;letter-spacing:.6px;color:var(--ink);text-transform:uppercase}
+.irow .iv{font-size:16px;line-height:1.6}
+.irow .iv a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--ink)}
+.irow .iv a:hover{opacity:.6}
+.benefits{max-width:1100px;margin:0 auto 60px;display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:5px}
+.benefits div{padding:22px;text-align:center}
+.benefits b{display:block;color:var(--ink);font-size:12px;letter-spacing:.6px;text-transform:uppercase;font-weight:700}
+.benefits span{display:block;color:var(--ink);font-size:12px;margin-top:6px}
+
+/* ---------- newsletter ---------- */
+#newsletter{position:relative;z-index:10;background:var(--parchment);padding:80px clamp(18px,4vw,56px);text-align:center}
+#newsletter .inner{max-width:640px;margin:0 auto;border:none;border-radius:0;padding:0;background:transparent}
+#newsletter h3{font-family:var(--sans);font-size:clamp(26px,3vw,38px);font-weight:800;letter-spacing:-.03em;line-height:.96}
+#newsletter h3 i{font-style:normal;font-weight:400}
+#newsletter p{color:var(--ink);font-size:16px;line-height:1.8;margin:12px auto 24px;max-width:520px}
+#newsletter .nl-cta{display:inline-block;padding:0 0 4px;border-radius:0;background:transparent;color:var(--ink);font-weight:400;
+  text-decoration:none;font-size:12px;letter-spacing:.6px;text-transform:uppercase;border-bottom:1px solid var(--ink);
+  box-shadow:none;transition:opacity .3s}
+#newsletter .nl-cta:hover{opacity:.6;transform:none;box-shadow:none}
+
+/* ---------- instagram ---------- */
+#social{position:relative;z-index:10;background:var(--rose);border-top:1px solid var(--ink);
+  padding:80px clamp(18px,4vw,56px);text-align:center}
+#social h3{font-family:var(--sans);font-size:clamp(26px,3vw,38px);font-weight:800;letter-spacing:-.03em;line-height:.96}
+#social h3 i{font-style:normal;font-weight:400}
+#social .handle{color:var(--ink);font-size:12px;letter-spacing:.6px;margin-top:8px}
+#social .handle a{color:var(--ink);text-decoration:underline;text-underline-offset:4px}
+#igwrap{position:relative;overflow:hidden;margin:34px 0 28px;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);
+  mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
+#igtrack{display:flex;gap:14px;width:max-content;animation:igscroll 60s linear infinite}
+#igwrap:hover #igtrack{animation-play-state:paused}
+@keyframes igscroll{to{transform:translateX(-50%)}}
+#igtrack a{position:relative;flex:0 0 auto;width:clamp(200px,20vw,264px);aspect-ratio:4/5;
+  background:var(--ivory);overflow:hidden;display:block}
+#igtrack a img{width:100%;height:100%;object-fit:cover;transition:transform .4s}
+#igtrack a:hover img{transform:scale(1.04)}
+#igtrack a .play{position:absolute;top:10px;right:12px;color:#fff;font-size:15px;text-shadow:0 1px 8px rgba(0,0,0,.7)}
+#igtrack a .igcap{position:absolute;left:0;right:0;bottom:0;padding:26px 12px 12px;font-size:12px;color:#fff;text-align:left;
+  background:linear-gradient(transparent,rgba(0,0,0,.78));opacity:0;transition:.3s;line-height:1.4}
+#igtrack a:hover .igcap{opacity:1}
+.socbtns{display:flex;gap:26px;justify-content:center;flex-wrap:wrap}
+.socbtns a{padding:0 0 4px;border:none;border-bottom:1px solid var(--ink);border-radius:0;color:var(--ink);text-decoration:none;
+  font-size:12px;letter-spacing:.6px;text-transform:uppercase;transition:opacity .3s}
+.socbtns a:hover{opacity:.6}
+
+/* ---------- footer: ritorno alla palette oro/notte ---------- */
+footer{position:relative;z-index:10;background:var(--night);border-top:1px solid rgba(212,175,55,.35);
+  padding:60px clamp(18px,4vw,56px) 28px;color:#cfc6b2;font-size:13px}
+.fgrid{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;gap:40px}
+@media(max-width:820px){.fgrid{grid-template-columns:1fr}}
+.fgrid .flogo{font-family:var(--display);font-weight:700;font-size:30px;letter-spacing:.02em;color:#f2e9de}
+.fgrid .flogo b{color:var(--gold)}
+.fgrid p{line-height:1.8;margin-top:12px}
+.fgrid h4{font-size:12px;font-weight:800;letter-spacing:.14em;color:var(--gold);text-transform:uppercase;margin-bottom:14px}
+.fgrid ul{list-style:none}
+.fgrid li{margin-bottom:8px;line-height:1.6}
+.fgrid a{color:#e6ded0;text-decoration:none;border-bottom:1px solid rgba(212,175,55,.4);transition:.3s}
+.fgrid a:hover{color:var(--gold);border-color:var(--gold)}
+.pays{max-width:1280px;margin:40px auto 0;padding-top:20px;border-top:1px solid rgba(212,175,55,.25);
+  display:flex;gap:5px 18px;flex-wrap:wrap;justify-content:center}
+.pays span{border:none;border-radius:0;padding:0;font-size:12px;letter-spacing:.6px;color:#b5ac97}
+.fcredits{text-align:center;margin-top:24px;font-size:12px;letter-spacing:.6px;color:#8a8272}
+.fcredits b{color:var(--gold);font-weight:700}
+
+
+/* ---------- vertical side label (broadsheet) ---------- */
+.sidelabel{position:absolute;left:22px;top:80px;writing-mode:vertical-rl;transform:rotate(180deg);
+  font-size:12px;font-weight:400;letter-spacing:.05em;text-transform:uppercase;color:var(--ink);pointer-events:none}
+@media(max-width:1100px){.sidelabel{display:none}}
+
+
+/* card bianche: bordo che si illumina SOLO al passaggio del mouse */
+@property --ga{syntax:'<angle>';inherits:false;initial-value:0deg}
+@keyframes glowspin{to{--ga:360deg}}
+.glow-card{position:relative;z-index:1;border-radius:18px !important;background:#ffffff;
+  border:1px solid rgba(0,0,0,.10) !important;
+  transition:border-color .3s, box-shadow .3s, transform .3s}
+.glow-card::before,.glow-card::after{content:'';position:absolute;inset:-2px;border-radius:20px;z-index:-1;
+  opacity:0;pointer-events:none;transition:opacity .35s;
+  background:conic-gradient(from var(--ga),
+    #ffffff 0%, #d9d9df 18%, #f7f7f9 36%, #c3c4cb 52%, #ffffff 68%, #e2e2e7 84%, #ffffff 100%);
+  animation:glowspin 4s linear infinite;animation-play-state:paused}
+.glow-card::after{filter:blur(14px)}
+.glow-card:hover,.glow-card:active{border-color:transparent !important;transform:translateY(-2px);
+  box-shadow:0 16px 36px -16px rgba(0,0,0,.18)}
+.glow-card:hover::before,.glow-card:active::before{opacity:1;animation-play-state:running}
+.glow-card:hover::after,.glow-card:active::after{opacity:.7;animation-play-state:running}
+
+/* ---------- whatsapp float ---------- */
+#wafloat{position:fixed;bottom:24px;right:24px;z-index:96;width:52px;height:52px;border-radius:50%;
+  background:linear-gradient(rgba(255,255,255,.34),rgba(255,255,255,.16));
+  -webkit-backdrop-filter:blur(14px) saturate(1.5);backdrop-filter:blur(14px) saturate(1.5);
+  border:1px solid rgba(255,255,255,.55);
+  box-shadow:0 10px 30px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.6);
+  display:flex;align-items:center;justify-content:center;transition:transform .3s, box-shadow .3s}
+#wafloat:hover{transform:translateY(-2px);box-shadow:0 16px 38px rgba(0,0,0,.32), inset 0 1px 0 rgba(255,255,255,.7)}
+#wafloat svg{width:26px;height:26px;fill:#0b0a08}
+#wafloat:hover svg{fill:#0b0a08}
+</style>
+</head>
+<body>
+
+<div id="veil">
+  <div class="vlogo">CAVEAU</div>
+  <div class="vbar"><i></i></div>
+</div>
+
+<div id="promobar" aria-label="Promozioni">
+  <span class="pmsg on">Spedizione gratis per ordini sopra i 59 €</span>
+  <span class="pmsg">Promo limitata · campioncini omaggio con ogni acquisto</span>
+  <span class="pmsg">Iscriviti alla newsletter · 10% sul tuo primo ordine</span>
+  <span class="pmsg">Ritiro in sede · Via Roma 52, Marcianise</span>
+  <span class="pmsg">Paga in 3 rate senza interessi con Klarna</span>
+</div>
+
+<nav id="nav">
+  <a class="logo" href="#top"><img src="assets/logo-caveau.png" alt="Caveau"></a>
+  <ul>
+    <li><a class="nl" href="#categorie">PROFUMI</a></li>
+    <li><a class="nl" href="#catalogo" onclick="selectCategory(6)">SET REGALO</a></li>
+    <li><a class="nl" href="#maison">MAISON</a></li>
+    <li><a class="nl" href="contatti.html">CONTATTI</a></li>
+  </ul>
+</nav>
+
+<div id="journey" style="position:relative" >
+  <canvas id="gl"></canvas>
+  <div id="hud">
+    <div class="beat" id="beat0">
+      <div class="eyebrow">Marcianise · Via Roma 52</div>
+      <h1 class="splash-title">CAVEAU</h1>
+      <div class="splash-sub">Profumeria Artistica</div>
+      <div class="scrollhint"><span class="glass-btn">Scorri per entrare</span></div>
+    </div>
+    <div class="beat" id="beat2">
+      <div class="midbeat">
+        <h2>Non solo profumi:<br>esperienze sensoriali</h2>
+        <p>selezioniamo per te i brand più raffinati</p>
+      </div>
+    </div>
+    <div class="beat" id="beatFinal">
+      <div class="h-big"><span class="top">LA COLLEZIONE</span><span class="low">ti attende</span></div>
+      <div class="finale-foot">
+        <a class="cta glass-btn" href="#catalogo">Sfoglia tutto il catalogo</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="marquee"><div class="track" id="mqtrack"></div></div>
+
+<section id="categorie">
+  <div class="sec-head">
+    <div class="eyebrow">Scegli il tuo percorso</div>
+    <h2>Per chi <i>cerchi</i>?</h2>
+    <p id="subcount"></p>
+  </div>
+  <div id="catgrid"></div>
+</section>
+
+<div id="shopband">
+  <picture>
+    <source media="(min-width:700px)" srcset="assets/spray-band.webp">
+    <img class="sb-photo" src="assets/spray-band-mobile.webp" alt="">
+  </picture>
+  <div class="sb-spray">
+    <span class="sb-ray"></span><span class="sb-ray"></span><span class="sb-ray"></span>
+    <span class="sb-ray"></span><span class="sb-ray"></span><span class="sb-ray"></span>
+    <span class="sb-ray"></span><span class="sb-ray"></span><span class="sb-ray"></span>
+  </div>
+  <a class="sb-cover" title="Shop Profumi" aria-label="Shop Profumi" href="#catalogo" onclick="selectCategory(0)">Shop Profumi</a>
+</div>
+
+<section id="catalogo">
+  <span class="sidelabel">Il catalogo — Marcianise</span>
+<div id="catalogWrap" hidden>
+  <div class="sec-head">
+    <div class="eyebrow">Il Catalogo</div>
+    <h2 id="catTitle">Profumi <i>d'autore</i></h2>
+  </div>
+  <div id="filters">
+    <input id="q" type="search" placeholder="Cerca un profumo, una nota, una maison…">
+    <select id="brand"><option value="">Tutte le maison</option></select>
+    <select id="sort">
+      <option value="feat">In evidenza</option>
+      <option value="az">Nome A→Z</option>
+      <option value="plo">Prezzo crescente</option>
+      <option value="phi">Prezzo decrescente</option>
+    </select>
+  </div>
+  <div id="chips"></div>
+  <div id="count"></div>
+  <div id="grid"></div>
+  <button id="more">Carica altri</button>
+</div>
+</section>
+
+<section id="newsletter">
+  <div class="inner">
+    <div class="eyebrow">Offerte esclusive</div>
+    <h3>Il <i>10%</i> sul tuo primo ordine</h3>
+    <p>Iscriviti alla newsletter di Caveau: anteprime sulle nuove maison, promozioni riservate e novità dal caveau, direttamente nella tua casella.</p>
+    <a class="nl-cta" href="https://caveauprofumeriaartistica.com/" target="_blank" rel="noopener">Iscriviti sul sito ufficiale</a>
+  </div>
+</section>
+
+<section id="social">
+  <h3>Il caveau, ogni giorno, su <i>Instagram</i></h3>
+  <div class="handle"><a href="https://www.instagram.com/caveauprofumeriartistica/" target="_blank" rel="noopener">@caveauprofumeriartistica</a></div>
+  <div id="igwrap"><div id="igtrack"></div></div>
+  <div class="socbtns">
+    <a href="https://www.instagram.com/caveauprofumeriartistica/" target="_blank" rel="noopener">Seguici su Instagram</a>
+    <a href="https://www.facebook.com/profile.php?id=61567795941212" target="_blank" rel="noopener">Facebook</a>
+  </div>
+</section>
+
+<section id="maison">
+  <div class="benefits">
+    <div class="glow-card"><b>Spedizione gratuita</b><span>per ordini sopra i 59 €</span></div>
+    <div class="glow-card"><b>Campioncini omaggio</b><span>con ogni acquisto</span></div>
+    <div class="glow-card"><b>Ritiro in sede</b><span>Via Roma 52, Marcianise (CE)</span></div>
+    <div class="glow-card"><b>Klarna</b><span>paga in 3 rate senza interessi</span></div>
+  </div>
+  <div class="mgrid">
+    <div>
+      <div class="eyebrow">La Maison</div>
+      <h2>Un caveau di <i>fragranze</i> nel cuore di Marcianise</h2>
+      <p>Caveau Profumeria Artistica nasce per custodire ciò che altrove non si trova: essenze rare, maison di nicchia, edizioni che diventano oggetti del desiderio. Rivenditori autorizzati delle più grandi case profumiere artistiche — da Creed a Xerjoff, da Kilian a Nishane — accompagniamo ogni ospite in un percorso olfattivo su misura, nel nostro showroom o a distanza.</p>
+      <p style="margin-top:14px">Campioncini omaggio con ogni acquisto · Spedizione gratuita sopra i 59€ · Confezione regalo dedicata.</p>
+    </div>
+    <div class="infobox glow-card">
+      <div class="irow"><span class="il">Showroom</span><span class="iv">Via Roma 52, 81025 Marcianise (CE)</span></div>
+      <div class="irow"><span class="il">Orari</span><span class="iv">Lun – Sab · 09:30–13:00 / 16:30–20:00<br>Domenica chiuso</span></div>
+      <div class="irow"><span class="il">Telefono</span><span class="iv"><a href="tel:+393923943218">(+39) 392 394 3218</a></span></div>
+      <div class="irow"><span class="il">Email</span><span class="iv"><a href="mailto:info@caveauprofumeriaartistica.com">info@caveauprofumeriaartistica.com</a></span></div>
+      <div class="irow"><span class="il">Online</span><span class="iv"><a href="https://caveauprofumeriaartistica.com" target="_blank" rel="noopener">caveauprofumeriaartistica.com</a></span></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="fgrid">
+    <div>
+      <div class="flogo">CAVEAU<b>.</b></div>
+      <p>Profumeria Artistica — Custodi dei Profumi più Rari ed Invidiati. Rivenditori autorizzati delle grandi maison di nicchia, a Marcianise e online.</p>
+    </div>
+    <div>
+      <h4>Contatti</h4>
+      <ul>
+        <li><a href="https://maps.google.com/?q=Via+Roma+52,+81025+Marcianise+CE" target="_blank" rel="noopener">Via Roma 52, 81025 Marcianise (CE)</a></li>
+        <li><a href="tel:+393923943218">(+39) 392 394 3218</a></li>
+        <li><a href="mailto:info@caveauprofumeriaartistica.com">info@caveauprofumeriaartistica.com</a></li>
+        <li>Lun – Sab · 09:30–13:00 / 16:30–20:00</li>
+      </ul>
+    </div>
+    <div>
+      <h4>Collegamenti</h4>
+      <ul>
+        <li><a href="#categorie">Catalogo profumi</a></li>
+        <li><a href="https://caveauprofumeriaartistica.com/products/caveau-buono-regalo" target="_blank" rel="noopener">Gift Card</a></li>
+        <li><a href="maison.html">Il nostro Caveau</a></li>
+        <li><a href="https://caveauprofumeriaartistica.com" target="_blank" rel="noopener">Sito ufficiale</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Assistenza</h4>
+      <ul>
+        <li><a href="contatti.html">Contatti</a></li>
+        <li><a href="spedizioni-resi.html">Spedizioni e resi</a></li>
+        <li><a href="faq.html">Domande frequenti</a></li>
+        <li><a href="spedizioni-resi.html#recesso">Diritto di recesso</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="pays">
+    <span>VISA</span><span>MASTERCARD</span><span>AMEX</span><span>PAYPAL</span><span>KLARNA</span>
+    <span>APPLE PAY</span><span>GOOGLE PAY</span><span>SHOP PAY</span><span>MAESTRO</span><span>UNION PAY</span>
+    <span>BANCONTACT</span><span>IDEAL</span><span>MOBILEPAY</span>
+  </div>
+  <div class="fcredits"><b>CAVEAU</b> Profumeria Artistica · Marcianise (CE) — spedizione gratuita sopra i 59 € · campioncini omaggio con ogni acquisto</div>
+</footer>
+
+<a id="wafloat" href="https://wa.me/393923943218?text=Ciao!%20Vorrei%20informazioni%20sui%20vostri%20profumi." target="_blank" rel="noopener" aria-label="Scrivici su WhatsApp">
+  <svg viewBox="0 0 32 32"><path d="M16 3C9.4 3 4 8.4 4 15c0 2.1.6 4.2 1.6 6L4 29l8.2-1.5c1.2.5 2.5.8 3.8.8 6.6 0 12-5.4 12-12S22.6 3 16 3zm0 22c-1.2 0-2.4-.3-3.5-.8l-.6-.3-4.9.9 1-4.7-.3-.6C6.6 17.9 6 16.5 6 15 6 9.5 10.5 5 16 5s10 4.5 10 10-4.5 10-10 10zm5.3-7.2c-.3-.2-1.7-.9-2-1s-.5-.2-.7.2-.8 1-.9 1.2-.3.2-.6.1c-.3-.2-1.2-.5-2.3-1.5-.9-.8-1.5-1.8-1.6-2.1s0-.5.1-.6l.4-.5c.2-.2.2-.3.3-.5s0-.4 0-.5c-.1-.2-.7-1.7-1-2.3-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4s-1 1-1 2.5 1.1 2.9 1.2 3.1c.2.2 2.1 3.2 5.1 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.7-.7 2-1.4.2-.7.2-1.3.2-1.4-.1-.1-.3-.2-.7-.4z"/></svg>
+</a>
+
+<div id="overlay">
+  <div id="modal">
+    <div id="mimg"><img id="mimgEl" alt=""></div>
+    <div id="minfo">
+      <button id="mclose" aria-label="Chiudi">×</button>
+      <div id="mbrand"></div>
+      <div id="mname"></div>
+      <div id="mcat"></div>
+      <div class="szl">Formato</div>
+      <div id="msizes"></div>
+      <div id="mprice"></div>
+      <div id="mavail"></div>
+      <div id="mlink">
+        <a class="buy" id="mbuy" target="_blank" rel="noopener">Acquista sul sito</a>
+        <a class="wa" id="mwa" target="_blank" rel="noopener">Richiedi su WhatsApp</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="catalog.js?v=3"></script>
+<script src="igfeed.js?v=2"></script>
+<script>
+/* catalogo: helper condivisi con le sezioni sotto */
+const CAT = window.CATALOG;
+const fmt = n => n.toLocaleString('it-IT',{style:'currency',currency:'EUR'});
+const minPrice = p => Math.min(...p.v.map(v=>v.p));
+const byHandle = {}; CAT.forEach(p=>byHandle[p.h]=p);
+
+/* ============================================================
+   VIDEO JOURNEY — il filmato del caveau avanza con lo scroll:
+   240 fotogrammi disegnati su canvas, mappati sulla posizione
+   di scorrimento (con sosta finale prima del catalogo)
+   ============================================================ */
+const FRAME_COUNT = 240;
+const framePath = i => `frames/f_${String(i+1).padStart(3,'0')}.webp`;
+const canvas = document.getElementById('gl');
+const ctx = canvas.getContext('2d');
+const frames = new Array(FRAME_COUNT);
+let loaded = 0;
+function loadFrame(i, cb){
+  if (frames[i]) { cb && cb(); return; }
+  const im = new Image();
+  im.onload = ()=>{ frames[i] = im; loaded++; cb && cb(); };
+  im.src = framePath(i);
+}
+loadFrame(0, ()=>{ curFrame = -1; draw(); });
+for (let i = 1; i < FRAME_COUNT; i++) setTimeout(()=>loadFrame(i, i < 24 ? draw : null), i*12);
+
+const journeyEl = document.getElementById('journey');
+let target = 0, prog = 0, curFrame = -1;
+function onScroll(){
+  /* il viaggio si completa all'85%: l'ultimo 15% è la sosta sul finale */
+  const max = Math.max(1, (journeyEl.offsetHeight - innerHeight) * 0.85);
+  target = Math.min(1, Math.max(0, scrollY / max));
+}
+addEventListener('scroll', onScroll, {passive:true});
+
+const lerp = (a,b,t)=>a+(b-a)*t;
+const smooth = (a,b,x)=>{ const t = Math.min(1, Math.max(0,(x-a)/(b-a))); return t*t*(3-2*t); };
+
+function resize(){
+  const dpr = Math.min(devicePixelRatio, 2);
+  canvas.width = innerWidth * dpr;
+  canvas.height = innerHeight * dpr;
+  curFrame = -1; draw();
+}
+addEventListener('resize', resize);
+
+function draw(){
+  const want = Math.round(prog * (FRAME_COUNT - 1));
+  /* usa il fotogramma caricato più vicino a quello richiesto */
+  let j = want;
+  while (j >= 0 && !frames[j]) j--;
+  if (j < 0){ j = want; while (j < FRAME_COUNT && !frames[j]) j++; if (j >= FRAME_COUNT) return; }
+  if (j === curFrame) return;
+  curFrame = j;
+  const im = frames[j], cw = canvas.width, ch = canvas.height;
+  /* riempi lo schermo ma senza mai zoomare oltre il 35%: sugli
+     schermi stretti il video resta leggibile e lo spazio residuo
+     è scuro, in tono col sito */
+  const cover = Math.max(cw/im.width, ch/im.height);
+  const contain = Math.min(cw/im.width, ch/im.height);
+  const s = Math.min(cover, contain*1.35);
+  const w = im.width*s, h = im.height*s;
+  ctx.imageSmoothingQuality = 'high';
+  ctx.fillStyle = '#000000';
+  ctx.fillRect(0, 0, cw, ch);
+  ctx.drawImage(im, (cw-w)/2, (ch-h)/2, w, h);
+  /* sfumature morbide sui bordi della striscia video */
+  if (h < ch - 2){
+    const y0 = (ch-h)/2, fade = Math.min(90, h*.18);
+    let g = ctx.createLinearGradient(0, y0, 0, y0+fade);
+    g.addColorStop(0, '#000000'); g.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = g; ctx.fillRect(0, y0, cw, fade);
+    g = ctx.createLinearGradient(0, y0+h, 0, y0+h-fade);
+    g.addColorStop(0, '#000000'); g.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = g; ctx.fillRect(0, y0+h-fade, cw, fade);
+  }
+}
+
+/* ---------- text beats ---------- */
+const beats = {
+  b0: document.getElementById('beat0'),
+  b2: document.getElementById('beat2'),
+  bf: document.getElementById('beatFinal'),
+};
+const hud = document.getElementById('hud');
+const ctaEl = document.querySelector('#beatFinal .cta');
+function beatOpacity(el, p, i, o, oEnd){
+  const v = smooth(i, i+.07, p) * (1 - smooth(o, oEnd, p));
+  el.style.opacity = v;
+  el.style.transform = `translateY(${(1-v)*26}px)`;
+}
+function updateHud(p){
+  const v0 = 1 - smooth(.05, .10, p);
+  beats.b0.style.opacity = v0;
+  beats.b0.style.transform = `translateY(${(1-v0)*26}px)`;
+  beatOpacity(beats.b2, p, .14, .58, .70);
+  const vf = smooth(.80, .90, p);
+  beats.bf.style.opacity = vf;
+  beats.bf.style.transform = `translateY(${(1-vf)*26}px)`;
+  ctaEl.style.pointerEvents = vf > .5 ? 'auto' : 'none';
+  const past = journeyEl.getBoundingClientRect().bottom < innerHeight*.5;
+  hud.classList.toggle('gone', past);
+}
+
+/* ---------- render loop ---------- */
+let lastT = performance.now();
+function tick(now){
+  const dt = Math.min(.05, (now - lastT)/1000); lastT = now;
+  if (!isFinite(prog)) prog = 0;
+  if (!isFinite(target)) target = 0;
+  prog = lerp(prog, target, Math.min(1, dt*4.5));
+  draw();
+  updateHud(prog);
+  requestAnimationFrame(tick);
+}
+resize(); onScroll();
+requestAnimationFrame(tick);
+
+/* veil: via quando l'inizio del filmato è pronto */
+const veilStart = performance.now();
+const veilTimer = setInterval(()=>{
+  if (loaded >= 20 || performance.now() - veilStart > 6000){
+    document.getElementById('veil').classList.add('off');
+    clearInterval(veilTimer);
+  }
+}, 200);
+
+/* nav solidify */
+const nav = document.getElementById('nav');
+addEventListener('scroll', ()=> nav.classList.toggle('solid', scrollY > innerHeight*.4), {passive:true});
+
+/* ============================================================
+   CATALOG — 1264 real products from caveauprofumeriaartistica.com
+   ============================================================ */
+/* marquee */
+const brandsAll = [...new Set(CAT.map(p=>p.b))].sort((a,b)=>a.localeCompare(b));
+const topBrands = ['Creed','Xerjoff','Kilian Paris','Nishane','Parfums De Marly','Initio Parfums Privés','Tiziana Terenzi','Memo Paris','Carthusia','Bois 1920','The Merchant of Venice','Escentric Molecules'];
+const mqHtml = topBrands.map(b=>`<span>${b}<i>◆</i></span>`).join('');
+document.getElementById('mqtrack').innerHTML = mqHtml + mqHtml;
+
+/* filters */
+const brandSel = document.getElementById('brand');
+brandsAll.forEach(b=>{ const o=document.createElement('option'); o.value=b; o.textContent=b; brandSel.appendChild(o); });
+/* selections — genere ricavato dalle collezioni reali dello shop */
+const SELS = [
+  {label:'Tutta la collezione', short:'Tutto', test:p=>true, art:'absolu-aventus-millesime-50-ml-spray'},
+  {label:'Profumi Uomo', short:'Uomo', test:p=>p.g==='u', art:'layton-edp-125-ml'},
+  {label:'Profumi Donna', short:'Donna', test:p=>p.g==='d', art:'kirke-extrait-de-parfum-100-ml'},
+  {label:'Profumi Unisex', short:'Unisex', test:p=>p.g==='x', art:'hacivat-extrait-de-parfum-100-ml'},
+  {label:"Profumatori d'Ambiente", short:'Ambiente', test:p=>p.c==="PROFUMATORI D'AMBIENTE", art:'rosso-nobile-500-ml-fragranza-collezione'},
+  {label:'Bagno & Corpo', short:'Bagno e corpo', test:p=>p.c==='BAGNO & CORPO', art:'crema-corpo-blu-indaco-250-ml'},
+  {label:'Set Regalo', short:'Set Regalo', test:p=>p.k || p.c==='COFANETTI REGALO' || p.h==='caveau-buono-regalo'},
+];
+let activeSel = 0;
+const chipsEl = document.getElementById('chips');
+SELS.forEach((s,i)=>{
+  const c = document.createElement('button'); c.className='chip'+(i===0?' on':'');
+  c.textContent = s.short;
+  c.onclick = ()=>setSel(i);
+  chipsEl.appendChild(c);
+});
+function setSel(i){
+  activeSel = i;
+  document.querySelectorAll('#chips .chip').forEach((x,k)=>x.classList.toggle('on', k===i));
+  const words = SELS[i].label.split(' ');
+  document.getElementById('catTitle').innerHTML =
+    i===0 ? "Profumi <i>d'autore</i>" : words.slice(0,-1).join(' ') + ' <i>' + words.at(-1) + '</i>';
+  apply();
+}
+function selectCategory(i){
+  document.getElementById('catalogWrap').hidden = false;
+  setSel(i);
+  document.getElementById('catalogo').scrollIntoView({behavior:'smooth'});
+}
+
+/* category picker: DS&D editorial rows — foto intere, niente ritagli */
+{
+  const img = (p,w)=> p && p.i ? p.i + (p.i.includes('?')?'&':'?') + 'width='+w : '';
+  const BIG = {1:'layton-edp-125-ml',2:'kirke-extrait-de-parfum-100-ml',3:'hacivat-extrait-de-parfum-100-ml',
+               4:'rosso-nobile-500-ml-fragranza-collezione',5:'crema-corpo-blu-indaco-250-ml',
+               6:'caveau-buono-regalo'};
+  const NOSET = /\bset\b|\bkit\b|cofanett|discovery|box|bundle|refill|ricarica/i;
+  document.getElementById('catgrid').innerHTML = [1,2,3,4,5,6].map(i=>{
+    const s = SELS[i];
+    const n = CAT.filter(s.test).length;
+    const big = byHandle[BIG[i]];
+    const tiles = CAT.filter(p=>s.test(p) && p.i && p.v.some(v=>v.a) && (i===6 || !NOSET.test(p.n)) && p.h!==BIG[i]).slice(0,2);
+    if (i===6){
+      return `<div class="catrow giftrow" onclick="selectCategory(6)">
+        <span class="crlabel">${s.label} — ${n} referenze</span>
+        <div class="crbig gcell">
+          <img loading="lazy" src="assets/giftcard.webp" alt="Gift Card">
+          <h3>${s.short}</h3>
+        </div>
+        <div class="crtile gcell"><img loading="lazy" src="assets/set-lifestyle-1.webp" alt="${s.label}"></div>
+        <div class="crtile gcell"><img loading="lazy" src="assets/set-lifestyle-2.webp" alt="${s.label}"></div>
+        <span class="crarrow">&rsaquo;</span>
+      </div>`;
+    }
+    return `<div class="catrow" onclick="selectCategory(${i})">
+      <span class="crlabel">${s.label} — ${n} referenze</span>
+      <div class="crbig">
+        ${big?`<img loading="lazy" src="${img(big,700)}" alt="">`:''}
+        <h3>${s.short}</h3>
+      </div>
+      <div class="crtile">${tiles[0]?`<img loading="lazy" src="${img(tiles[0],420)}" alt="${s.label}">`:''}</div>
+      <div class="crtile">${tiles[1]?`<img loading="lazy" src="${img(tiles[1],420)}" alt="${s.label}">`:''}</div>
+      <span class="crarrow">&rsaquo;</span>
+    </div>`;
+  }).join('');
+  /* spray: 9 raggi ±24°, testo animato che scorre via dal beccuccio (DS&D) */
+  const ANG = [24,18,12,6,0,-6,-12,-18,-24];
+  document.querySelectorAll('#shopband .sb-ray').forEach((r,k)=>{
+    r.innerHTML = '<span class="sb-run">' + 'SHOP PROFUMI\u2002'.repeat(24) + '</span>';
+    r.style.transform = `rotate(${ANG[k]}deg)`;
+  });
+  /* misura un'unità di testo per il loop senza scatti */
+  {
+    const probe = document.createElement('span');
+    probe.style.cssText = 'position:absolute;visibility:hidden;font-size:14px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;white-space:pre;font-family:Manrope,sans-serif';
+    probe.textContent = 'SHOP PROFUMI\u2002';
+    document.body.appendChild(probe);
+    document.getElementById('shopband').style.setProperty('--unit', probe.offsetWidth + 'px');
+    probe.remove();
+  }
+}
+
+document.getElementById('subcount').textContent =
+  `${CAT.length} referenze · ${brandsAll.length} maison — catalogo reale di Caveau Profumeria Artistica`;
+
+const grid = document.getElementById('grid');
+const PAGE = 48;
+let filtered = CAT, shown = 0;
+
+function cardHtml(p, idx){
+  const mp = minPrice(p);
+  const avail = p.v.some(v=>v.a);
+  const img = p.i ? `<img loading="lazy" src="${p.i}${p.i.includes('?')?'&':'?'}width=420" alt="${p.n.replace(/"/g,'&quot;')}">`
+                  : `<div class="noimg">✦</div>`;
+  return `<div class="pcard" data-i="${idx}">
+    <div class="ph">${img}${avail?'':'<span class="badge">Esaurito</span>'}</div>
+    <div class="pi">
+      <div class="pb">${p.b}</div>
+      <div class="pn">${p.n}</div>
+      <div class="pp">${p.v.length>1?'da ':''}<b>${fmt(mp)}</b>${p.v.length>1?` · ${p.v.length} formati`:''}</div>
+    </div>
+  </div>`;
+}
+function renderMore(){
+  const next = filtered.slice(shown, shown+PAGE);
+  grid.insertAdjacentHTML('beforeend', next.map(p=>cardHtml(p, CAT.indexOf(p))).join(''));
+  shown += next.length;
+  document.getElementById('more').hidden = shown >= filtered.length;
+  document.getElementById('count').textContent =
+    `${Math.min(shown, filtered.length)} di ${filtered.length} profumi`;
+}
+function apply(){
+  const q = document.getElementById('q').value.trim().toLowerCase();
+  const b = brandSel.value;
+  const s = document.getElementById('sort').value;
+  filtered = CAT.filter(p=>
+    (!b || p.b===b) &&
+    SELS[activeSel].test(p) &&
+    (!q || (p.n+' '+p.b).toLowerCase().includes(q))
+  );
+  if (s==='az') filtered = [...filtered].sort((a,b)=>a.n.localeCompare(b.n));
+  if (s==='plo') filtered = [...filtered].sort((a,b)=>minPrice(a)-minPrice(b));
+  if (s==='phi') filtered = [...filtered].sort((a,b)=>minPrice(b)-minPrice(a));
+  grid.innerHTML=''; shown=0; renderMore();
+}
+document.getElementById('q').addEventListener('input', apply);
+brandSel.addEventListener('change', apply);
+document.getElementById('sort').addEventListener('change', apply);
+document.getElementById('more').onclick = renderMore;
+function quickFilter(q){ const el=document.getElementById('q'); el.value=q; apply(); }
+apply();
+
+/* ---------- product modal ---------- */
+const overlay = document.getElementById('overlay');
+let cur = null;
+grid.addEventListener('click', e=>{
+  const card = e.target.closest('.pcard'); if(!card) return;
+  openProduct(CAT[+card.dataset.i]);
+});
+function openProduct(p){
+  cur = p;
+  document.getElementById('mbrand').textContent = p.b;
+  document.getElementById('mname').textContent = p.n;
+  document.getElementById('mcat').textContent = p.c.toLowerCase();
+  const im = document.getElementById('mimgEl');
+  if (p.i){ im.src = `${p.i}${p.i.includes('?')?'&':'?'}width=800`; im.style.display=''; }
+  else im.style.display='none';
+  const sz = document.getElementById('msizes'); sz.innerHTML='';
+  p.v.forEach((v,k)=>{
+    const b = document.createElement('button');
+    b.className = 'size'+(v.a?'':' soldout');
+    b.textContent = v.s;
+    b.onclick = ()=> selectSize(k);
+    sz.appendChild(b);
+  });
+  const firstOk = p.v.findIndex(v=>v.a);
+  selectSize(firstOk === -1 ? 0 : firstOk);
+  overlay.classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function selectSize(k){
+  const v = cur.v[k];
+  document.querySelectorAll('#msizes .size').forEach((b,i)=>b.classList.toggle('on', i===k));
+  document.getElementById('mprice').innerHTML = fmt(v.p) + `<small>${v.s}</small>`;
+  const av = document.getElementById('mavail');
+  av.textContent = v.a ? '● Disponibile — spedizione gratuita sopra 59€' : '● Al momento esaurito in questo formato';
+  av.className = v.a ? 'ok' : 'ko';
+  const url = `https://caveauprofumeriaartistica.com/products/${cur.h}`;
+  document.getElementById('mbuy').href = url;
+  document.getElementById('mwa').href =
+    `https://wa.me/393923943218?text=${encodeURIComponent(`Ciao! Vorrei informazioni su ${cur.n} (${v.s}) — ${fmt(v.p)}`)}`;
+}
+function closeModal(){ overlay.classList.remove('open'); document.body.style.overflow=''; }
+document.getElementById('mclose').onclick = closeModal;
+overlay.addEventListener('click', e=>{ if(e.target===overlay) closeModal(); });
+addEventListener('keydown', e=>{ if(e.key==='Escape') closeModal(); });
+
+/* ---------- promo bar rotation ---------- */
+const pmsgs = document.querySelectorAll('#promobar .pmsg');
+let pIdx = 0;
+setInterval(()=>{
+  pmsgs[pIdx].classList.remove('on');
+  pIdx = (pIdx+1) % pmsgs.length;
+  pmsgs[pIdx].classList.add('on');
+}, 3800);
+
+/* ---------- instagram: real posts from the store's live feed ---------- */
+{
+  const posts = window.IG_POSTS||[];
+  const card = p => `<a href="${p.u}" target="_blank" rel="noopener">
+     <img src="${p.i}" alt="Post Instagram di Caveau Profumeria Artistica" loading="lazy">
+     ${p.v?'<span class="play">▶</span>':''}
+     <span class="igcap">${(p.c||'').replace(/</g,'&lt;')}</span>
+   </a>`;
+  /* doppia lista → scorrimento infinito senza stacchi */
+  document.getElementById('igtrack').innerHTML = (posts.map(card).join('')) + (posts.map(card).join(''));
+}
+</script>
+</body>
+</html>

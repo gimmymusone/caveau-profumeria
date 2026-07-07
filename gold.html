@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CAVEAU · Profumeria Artistica — Custodi dei Profumi più Rari</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --accent:#d4af37;
+  --accent-soft:rgba(212,175,55,.14);
+  --bg:#060608;
+  --panel:#0d0d11;
+  --card:#111116;
+  --line:rgba(212,175,55,.18);
+  --txt:#f2ede1;
+  --muted:#9a927e;
+  --serif:'Cormorant Garamond',serif;
+  --sans:'Inter',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--txt);font-family:var(--sans);overflow-x:hidden}
+::selection{background:var(--accent);color:#000}
+
+/* ---------- loader ---------- */
+#veil{position:fixed;inset:0;background:var(--bg);z-index:200;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:18px;transition:opacity .9s ease,visibility .9s}
+#veil.off{opacity:0;visibility:hidden}
+#veil .vlogo{font-family:var(--serif);font-size:clamp(34px,5vw,54px);letter-spacing:.35em;color:var(--accent);text-indent:.35em}
+#veil .vbar{width:160px;height:1px;background:rgba(212,175,55,.25);overflow:hidden}
+#veil .vbar i{display:block;height:100%;width:40%;background:var(--accent);animation:sweep 1.2s infinite}
+@keyframes sweep{0%{transform:translateX(-100%)}100%{transform:translateX(250%)}}
+
+/* ---------- promo bar ---------- */
+#promobar{position:fixed;top:0;left:0;right:0;z-index:105;height:34px;overflow:hidden;
+  background:linear-gradient(90deg,#0a0806,#191206,#0a0806);border-bottom:1px solid var(--line);
+  display:flex;align-items:center;justify-content:center}
+#promobar .pmsg{position:absolute;font-size:10px;letter-spacing:.28em;color:var(--accent);
+  text-transform:uppercase;opacity:0;transition:opacity .7s;text-align:center;padding:0 14px;white-space:nowrap}
+#promobar .pmsg.on{opacity:1}
+@media(max-width:600px){#promobar .pmsg{font-size:9px;letter-spacing:.12em;white-space:normal;line-height:1.3}}
+
+/* ---------- nav ---------- */
+nav{position:fixed;top:34px;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;
+  padding:16px clamp(20px,4vw,56px);transition:background .4s,backdrop-filter .4s}
+nav.solid{background:rgba(6,6,8,.82);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+nav .logo{font-family:var(--serif);font-size:24px;letter-spacing:.32em;color:var(--txt);text-decoration:none}
+nav .logo b{color:var(--accent);font-weight:600}
+nav ul{display:flex;gap:clamp(14px,2.6vw,38px);list-style:none}
+nav a.nl{color:var(--muted);text-decoration:none;font-size:11px;letter-spacing:.22em;transition:color .3s}
+nav a.nl:hover{color:var(--accent)}
+@media(max-width:760px){nav ul{display:none}}
+
+/* ---------- hero journey ---------- */
+#journey{height:420vh;position:relative}
+#gl{position:fixed;inset:0;width:100%;height:100%;z-index:1;pointer-events:none}
+#hud{position:fixed;inset:0;z-index:5;pointer-events:none;display:block;transition:opacity .5s}
+#hud.gone{opacity:0}
+.beat{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;opacity:0;will-change:opacity,transform;padding:0 22px}
+.eyebrow{font-size:11px;letter-spacing:.42em;color:var(--accent);text-transform:uppercase;margin-bottom:22px}
+.splash-title{font-family:var(--serif);font-size:clamp(52px,9.5vw,128px);letter-spacing:.22em;text-indent:.22em;line-height:1;color:var(--txt);
+  text-shadow:0 2px 30px rgba(0,0,0,.75)}
+.splash-sub{font-family:var(--serif);font-style:italic;font-size:clamp(17px,2.3vw,26px);color:#cfc6b2;margin-top:16px;text-shadow:0 1px 14px rgba(0,0,0,.8)}
+.scrollhint{position:absolute;bottom:36px;left:50%;transform:translateX(-50%);font-size:10px;letter-spacing:.34em;
+  color:#cfc6b2;text-transform:uppercase;text-shadow:0 1px 10px rgba(0,0,0,.8)}
+.scrollhint::after{content:"";display:block;width:1px;height:42px;background:linear-gradient(var(--accent),transparent);margin:12px auto 0;animation:drip 1.8s infinite}
+@keyframes drip{0%{transform:scaleY(0);transform-origin:top}55%{transform:scaleY(1);transform-origin:top}100%{transform:scaleY(0);transform-origin:bottom}}
+/* free-floating manifesto — no box, big serif, gold keywords */
+.manifesto{max-width:820px;text-align:center;font-family:var(--serif)}
+.manifesto .m1{font-size:clamp(34px,5.6vw,68px);line-height:1.12;font-weight:400;color:var(--txt);
+  text-shadow:0 3px 30px rgba(0,0,0,.9), 0 1px 8px rgba(0,0,0,.8)}
+.manifesto .m1 em{color:var(--accent);font-style:italic;font-weight:600;font-size:1.12em;
+  text-shadow:0 0 34px rgba(212,175,55,.45), 0 3px 26px rgba(0,0,0,.9)}
+.manifesto .mdia{color:var(--accent);font-size:13px;margin:26px 0 22px;letter-spacing:1.2em;text-indent:1.2em;
+  text-shadow:0 0 18px rgba(212,175,55,.6)}
+.manifesto .m2{font-family:var(--sans);font-weight:300;font-size:clamp(12px,1.5vw,15px);
+  letter-spacing:.3em;text-transform:uppercase;color:#d8cfba;text-shadow:0 1px 12px rgba(0,0,0,.95)}
+.manifesto .m2 b{color:var(--accent);font-weight:600}
+.h-big{font-family:var(--serif);line-height:.95;text-shadow:0 2px 26px rgba(0,0,0,.8)}
+.h-big .top{display:block;font-size:clamp(38px,7vw,92px);letter-spacing:.18em;text-indent:.18em}
+.h-big .low{display:block;font-style:italic;font-weight:500;font-size:clamp(44px,8.4vw,110px);color:var(--accent)}
+/* finale: headline below the nav, instructions anchored at the bottom
+   in their own legible plate — the display wall stays clear in between */
+#beatFinal{justify-content:flex-start;padding-top:15vh}
+#beatFinal .h-big .top{font-size:clamp(24px,4.2vw,52px)}
+#beatFinal .h-big .low{font-size:clamp(30px,5.4vw,64px)}
+#beatFinal .finale-foot{position:absolute;bottom:13vh;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:14px;padding:22px 52px 26px;
+  border-radius:44px;border:1px solid var(--line);backdrop-filter:blur(12px);
+  background:
+    radial-gradient(130% 110% at 50% 0%, rgba(212,175,55,.14), transparent 55%),
+    repeating-linear-gradient(115deg, rgba(212,175,55,.04) 0 1px, transparent 1px 8px),
+    rgba(8,7,5,.68);
+  white-space:nowrap;max-width:92vw}
+#beatFinal .hint{font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:#e8dfc8;
+  text-shadow:0 1px 10px rgba(0,0,0,.85)}
+#beatFinal .hint b{color:var(--accent);font-weight:600}
+#beatFinal .cta{pointer-events:none;display:inline-block;border-radius:999px;
+  background:linear-gradient(120deg,#b8933a,#e8c65a 45%,#b8933a);color:#000;font-weight:600;
+  text-decoration:none;font-size:11px;letter-spacing:.26em;text-transform:uppercase;padding:14px 44px;transition:.3s;
+  box-shadow:0 12px 32px -10px rgba(212,175,55,.65)}
+#beatFinal .cta:hover{transform:translateY(-2px);box-shadow:0 16px 40px -10px rgba(212,175,55,.85)}
+@media(max-width:700px){#beatFinal .finale-foot{border-radius:30px;padding:18px 26px 22px}}
+@media(max-width:700px){#beatFinal .finale-foot{white-space:normal;text-align:center;padding:14px 20px}}
+#tip{position:fixed;z-index:90;pointer-events:none;background:rgba(8,7,10,.92);border:1px solid var(--accent);
+  padding:10px 16px;font-size:12px;letter-spacing:.05em;color:var(--txt);opacity:0;transition:opacity .15s;max-width:260px}
+#tip .tb{color:var(--accent);font-size:10px;letter-spacing:.24em;text-transform:uppercase;display:block;margin-bottom:3px}
+#tip .tp{color:var(--muted);display:block;margin-top:3px}
+
+/* ---------- marquee ---------- */
+#marquee{position:relative;z-index:10;background:var(--bg);border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  overflow:hidden;padding:22px 0;white-space:nowrap}
+#marquee .track{display:inline-block;animation:mq 36s linear infinite}
+#marquee span{font-family:var(--serif);font-size:26px;letter-spacing:.14em;color:var(--muted);margin:0 34px}
+#marquee span i{font-style:normal;color:var(--accent);margin-left:34px;font-size:14px;vertical-align:middle}
+@keyframes mq{to{transform:translateX(-50%)}}
+
+/* ---------- category picker: arched backlit niches, like the vault ---------- */
+#categorie{position:relative;z-index:10;background:var(--bg);padding:90px clamp(18px,4vw,56px) 80px}
+#catgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:clamp(12px,1.8vw,22px);
+  max-width:1240px;margin:0 auto}
+@media(max-width:520px){#catgrid{grid-template-columns:repeat(2,1fr)}}
+.catcard{position:relative;cursor:pointer;text-align:center;overflow:hidden;aspect-ratio:3/4.1;
+  border-radius:999px 999px 16px 16px;border:1px solid var(--line);
+  display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding:0 12px 22px;
+  background:
+    radial-gradient(130% 80% at 50% 0%, rgba(212,175,55,.22), rgba(212,175,55,.05) 45%, transparent 72%),
+    repeating-linear-gradient(115deg, rgba(212,175,55,.05) 0 1px, transparent 1px 8px),
+    linear-gradient(#17130d, #0a0906 72%);
+  transition:transform .4s, border-color .4s, box-shadow .4s}
+.catcard::after{content:'';position:absolute;left:0;right:0;bottom:0;height:27%;
+  background:linear-gradient(transparent, rgba(5,4,2,.85) 40%);pointer-events:none}
+.catcard:hover{border-color:var(--accent);transform:translateY(-6px);
+  box-shadow:0 26px 54px -22px rgba(212,175,55,.5)}
+/* backlit white niche with the original product photo, like the vetrina */
+.catcard .ci{position:absolute;top:0;bottom:26%;left:0;right:0;
+  background:linear-gradient(#faf7f0,#e9e3d4);display:flex;align-items:center;justify-content:center;
+  padding:16% 15% 9%}
+.catcard .ci img{max-height:100%;max-width:100%;object-fit:contain;
+  mix-blend-mode:multiply;transition:transform .45s}
+.catcard:hover .ci img{transform:scale(1.07)}
+.catcard .cover-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.92;transition:transform .5s}
+.catcard:hover .cover-img{transform:scale(1.05)}
+.catcard .cl{position:relative;z-index:2;font-family:var(--serif);font-weight:600;
+  font-size:clamp(16px,1.5vw,21px);letter-spacing:.14em;text-transform:uppercase;color:var(--txt)}
+.catcard .cn{position:relative;z-index:2;font-size:10px;letter-spacing:.24em;color:#b8ac8e;margin-top:5px;text-transform:uppercase}
+#allbtn{display:block;margin:38px auto 0;padding:17px 58px;border-radius:999px;border:none;cursor:pointer;
+  background:linear-gradient(120deg,#b8933a,#e8c65a 45%,#b8933a);color:#000;font-weight:600;font-family:var(--sans);
+  font-size:12px;letter-spacing:.3em;text-transform:uppercase;
+  box-shadow:0 14px 36px -12px rgba(212,175,55,.6);transition:.3s}
+#allbtn:hover{transform:translateY(-2px);box-shadow:0 18px 44px -12px rgba(212,175,55,.8)}
+
+/* ---------- catalog ---------- */
+#catalogo{position:relative;z-index:10;background:linear-gradient(rgba(6,6,8,.97),rgba(6,6,8,.97));padding:90px clamp(18px,4vw,56px) 80px}
+#catalogo:has(> #catalogWrap[hidden]){padding:0}
+.sec-head{text-align:center;margin-bottom:46px}
+.sec-head .eyebrow{margin-bottom:14px}
+.sec-head h2{font-family:var(--serif);font-size:clamp(36px,5vw,58px);letter-spacing:.1em;font-weight:600}
+.sec-head h2 i{color:var(--accent);font-weight:500}
+.sec-head p{color:var(--muted);margin-top:12px;font-size:14px}
+#filters{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-bottom:20px}
+#filters input,#filters select{background:var(--card);border:1px solid var(--line);color:var(--txt);
+  padding:12px 22px;border-radius:999px;font-family:var(--sans);font-size:13px;letter-spacing:.04em;outline:none;min-width:200px}
+#filters input:focus,#filters select:focus{border-color:var(--accent)}
+#filters input{min-width:min(320px,80vw)}
+#chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:34px}
+.chip{background:transparent;border:1px solid var(--line);border-radius:999px;color:var(--muted);padding:8px 18px;font-size:11px;
+  letter-spacing:.16em;text-transform:uppercase;cursor:pointer;transition:.3s;font-family:var(--sans)}
+.chip:hover{color:var(--accent);border-color:var(--accent)}
+.chip.on{background:var(--accent);border-color:var(--accent);color:#000}
+#count{text-align:center;color:var(--muted);font-size:12px;letter-spacing:.18em;margin-bottom:26px;text-transform:uppercase}
+#grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:18px;max-width:1460px;margin:0 auto}
+.pcard{background:var(--card);border:1px solid rgba(255,255,255,.05);cursor:pointer;overflow:hidden;
+  transition:transform .35s,border-color .35s,box-shadow .35s;display:flex;flex-direction:column}
+.pcard:hover{transform:translateY(-5px);border-color:var(--accent);box-shadow:0 18px 44px -18px rgba(212,175,55,.35)}
+.pcard .ph{aspect-ratio:1/1;background:#f6f4ef;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative}
+.pcard .ph img{width:100%;height:100%;object-fit:contain;mix-blend-mode:multiply;transition:transform .5s}
+.pcard:hover .ph img{transform:scale(1.06)}
+.pcard .ph .noimg{font-family:var(--serif);font-size:40px;color:#c9bd93}
+.badge{position:absolute;top:10px;left:10px;background:#1c1c22;color:#cf7c7c;font-size:10px;letter-spacing:.14em;
+  padding:5px 10px;text-transform:uppercase}
+.pcard .pi{padding:16px 16px 18px;display:flex;flex-direction:column;gap:5px;flex:1}
+.pcard .pb{font-size:10px;letter-spacing:.24em;color:var(--accent);text-transform:uppercase}
+.pcard .pn{font-family:var(--serif);font-size:19px;line-height:1.2;flex:1}
+.pcard .pp{font-size:13px;color:var(--muted)}
+.pcard .pp b{color:var(--txt);font-weight:600;font-size:15px}
+#more{display:block;margin:44px auto 0;padding:15px 52px;background:transparent;border:1px solid var(--accent);border-radius:999px;
+  color:var(--accent);font-size:12px;letter-spacing:.28em;text-transform:uppercase;cursor:pointer;transition:.3s;font-family:var(--sans)}
+#more:hover{background:var(--accent);color:#000}
+#more[hidden]{display:none}
+
+/* ---------- modal ---------- */
+#overlay{position:fixed;inset:0;z-index:150;background:rgba(4,4,6,.78);backdrop-filter:blur(10px);
+  display:flex;align-items:center;justify-content:center;padding:22px;opacity:0;visibility:hidden;transition:.35s}
+#overlay.open{opacity:1;visibility:visible}
+#modal{background:var(--panel);border:1px solid var(--line);max-width:940px;width:100%;max-height:92vh;overflow:auto;
+  display:grid;grid-template-columns:1fr 1fr;transform:translateY(24px);transition:transform .4s}
+#overlay.open #modal{transform:none}
+@media(max-width:760px){#modal{grid-template-columns:1fr}}
+#mimg{background:#f6f4ef;display:flex;align-items:center;justify-content:center;min-height:320px;padding:26px}
+#mimg img{max-width:100%;max-height:520px;object-fit:contain;mix-blend-mode:multiply}
+#minfo{padding:clamp(26px,4vw,46px);display:flex;flex-direction:column;gap:16px;position:relative}
+#mclose{position:absolute;top:14px;right:16px;background:none;border:none;color:var(--muted);font-size:26px;cursor:pointer;line-height:1}
+#mclose:hover{color:var(--accent)}
+#mbrand{font-size:11px;letter-spacing:.3em;color:var(--accent);text-transform:uppercase}
+#mname{font-family:var(--serif);font-size:clamp(26px,3.2vw,36px);line-height:1.12}
+#mcat{font-size:11px;letter-spacing:.2em;color:var(--muted);text-transform:uppercase}
+#msizes{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px}
+.szl{font-size:11px;letter-spacing:.22em;color:var(--muted);text-transform:uppercase;margin-top:10px}
+.size{padding:11px 22px;border:1px solid var(--line);border-radius:999px;background:transparent;color:var(--txt);cursor:pointer;
+  font-size:13px;letter-spacing:.06em;transition:.25s;font-family:var(--sans)}
+.size:hover{border-color:var(--accent)}
+.size.on{background:var(--accent);color:#000;border-color:var(--accent);font-weight:600}
+.size.soldout{opacity:.38;text-decoration:line-through;cursor:not-allowed}
+#mprice{font-family:var(--serif);font-size:44px;color:var(--txt);margin-top:4px}
+#mprice small{font-size:16px;color:var(--muted);font-family:var(--sans);letter-spacing:.08em;margin-left:10px}
+#mavail{font-size:12px;letter-spacing:.14em}
+#mavail.ok{color:#8fbf8f}#mavail.ko{color:#cf7c7c}
+#mlink{margin-top:auto;padding-top:18px;display:flex;gap:12px;flex-wrap:wrap}
+#mlink a{flex:1;text-align:center;padding:15px 20px;border-radius:999px;text-decoration:none;font-size:11px;letter-spacing:.24em;
+  text-transform:uppercase;transition:.3s;min-width:170px}
+#mlink a.buy{background:var(--accent);color:#000;font-weight:600}
+#mlink a.buy:hover{background:#e8c65a}
+#mlink a.wa{border:1px solid var(--line);color:var(--txt)}
+#mlink a.wa:hover{border-color:var(--accent);color:var(--accent)}
+
+/* ---------- maison / contatti ---------- */
+#maison{position:relative;z-index:10;background:var(--panel);border-top:1px solid var(--line);padding:100px clamp(18px,4vw,56px)}
+.mgrid{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1.2fr 1fr;gap:60px;align-items:center}
+@media(max-width:820px){.mgrid{grid-template-columns:1fr}}
+.mgrid h2{font-family:var(--serif);font-size:clamp(34px,4.6vw,52px);letter-spacing:.06em;line-height:1.1;margin-bottom:20px}
+.mgrid h2 i{color:var(--accent)}
+.mgrid p{color:var(--muted);line-height:1.8;font-size:15px}
+.infobox{border:1px solid var(--line);border-radius:32px;padding:38px;display:flex;flex-direction:column;gap:20px;background:var(--card)}
+.irow{display:flex;flex-direction:column;gap:4px}
+.irow .il{font-size:10px;letter-spacing:.3em;color:var(--accent);text-transform:uppercase}
+.irow .iv{font-size:15px;line-height:1.6}
+.irow .iv a{color:var(--txt);text-decoration:none;border-bottom:1px solid var(--line)}
+.irow .iv a:hover{color:var(--accent)}
+/* ---------- newsletter band ---------- */
+#newsletter{position:relative;z-index:10;background:var(--bg);padding:90px clamp(18px,4vw,56px);text-align:center}
+#newsletter .inner{max-width:680px;margin:0 auto;border:1px solid var(--accent);border-radius:46px;padding:54px 34px;
+  background:linear-gradient(160deg,rgba(212,175,55,.07),transparent 55%)}
+#newsletter h3{font-family:var(--serif);font-size:clamp(30px,4vw,46px);font-weight:600;letter-spacing:.04em}
+#newsletter h3 i{color:var(--accent)}
+#newsletter p{color:var(--muted);font-size:14px;line-height:1.7;margin:14px auto 26px;max-width:440px}
+#newsletter .nl-cta{display:inline-block;padding:15px 46px;border-radius:999px;
+  background:linear-gradient(120deg,#b8933a,#e8c65a 45%,#b8933a);color:#000;font-weight:600;
+  text-decoration:none;font-size:11px;letter-spacing:.26em;text-transform:uppercase;transition:.3s;
+  box-shadow:0 12px 32px -12px rgba(212,175,55,.6)}
+#newsletter .nl-cta:hover{transform:translateY(-2px);box-shadow:0 16px 40px -12px rgba(212,175,55,.8)}
+
+/* ---------- instagram band ---------- */
+#social{position:relative;z-index:10;background:var(--panel);border-top:1px solid var(--line);
+  padding:80px clamp(18px,4vw,56px);text-align:center}
+#social h3{font-family:var(--serif);font-size:clamp(28px,3.8vw,42px);font-weight:600}
+#social h3 i{color:var(--accent)}
+#social .handle{color:var(--muted);font-size:13px;letter-spacing:.2em;margin-top:10px}
+#social .handle a{color:var(--accent);text-decoration:none}
+#igrid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;max-width:1060px;margin:36px auto 30px}
+@media(max-width:760px){#igrid{grid-template-columns:repeat(2,1fr)}}
+#igrid a{position:relative;aspect-ratio:1/1;background:#101014;border:1px solid rgba(255,255,255,.06);
+  border-radius:18px;display:block;overflow:hidden;transition:.35s}
+#igrid a img{width:100%;height:100%;object-fit:cover;transition:transform .4s}
+#igrid a:hover{border-color:var(--accent);transform:translateY(-4px)}
+#igrid a:hover img{transform:scale(1.06)}
+#igrid a .play{position:absolute;top:10px;right:12px;color:#fff;font-size:15px;text-shadow:0 1px 8px rgba(0,0,0,.8)}
+#igrid a .igcap{position:absolute;left:0;right:0;bottom:0;padding:22px 12px 10px;font-size:11px;color:#f0e9d8;text-align:left;
+  background:linear-gradient(transparent,rgba(6,5,3,.88));opacity:0;transition:.35s;line-height:1.4}
+#igrid a:hover .igcap{opacity:1}
+.socbtns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.socbtns a{padding:13px 32px;border:1px solid var(--line);border-radius:999px;color:var(--txt);text-decoration:none;
+  font-size:11px;letter-spacing:.24em;text-transform:uppercase;transition:.3s}
+.socbtns a:hover{border-color:var(--accent);color:var(--accent)}
+
+/* ---------- footer ---------- */
+footer{position:relative;z-index:10;background:var(--bg);border-top:1px solid var(--line);
+  padding:60px clamp(18px,4vw,56px) 28px;color:var(--muted);font-size:13px}
+.fgrid{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;gap:40px}
+@media(max-width:820px){.fgrid{grid-template-columns:1fr}}
+.fgrid .flogo{font-family:var(--serif);font-size:26px;letter-spacing:.3em;color:var(--txt)}
+.fgrid .flogo b{color:var(--accent)}
+.fgrid p{line-height:1.8;margin-top:12px}
+.fgrid h4{font-size:11px;letter-spacing:.3em;color:var(--accent);text-transform:uppercase;margin-bottom:16px}
+.fgrid ul{list-style:none}
+.fgrid li{margin-bottom:10px;line-height:1.6}
+.fgrid a{color:var(--muted);text-decoration:none;border-bottom:1px solid transparent;transition:.3s}
+.fgrid a:hover{color:var(--accent);border-color:var(--accent)}
+.pays{max-width:1200px;margin:44px auto 0;padding-top:22px;border-top:1px solid rgba(212,175,55,.12);
+  display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.pays span{border:1px solid rgba(255,255,255,.12);border-radius:999px;padding:6px 15px;font-size:10px;letter-spacing:.14em;color:#b5ac97}
+.fcredits{text-align:center;margin-top:26px;font-size:11px;letter-spacing:.1em;color:#6f685a}
+.fcredits b{color:var(--accent);font-weight:500}
+
+/* ---------- benefits strip ---------- */
+.benefits{max-width:1100px;margin:0 auto 70px;display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px}
+.benefits div{border:1px solid var(--line);border-radius:26px;padding:22px 20px;background:var(--card);text-align:center}
+.benefits b{display:block;color:var(--accent);font-size:12px;letter-spacing:.22em;text-transform:uppercase;font-weight:600}
+.benefits span{display:block;color:var(--muted);font-size:12px;margin-top:7px;letter-spacing:.06em}
+
+/* ---------- whatsapp float ---------- */
+#wafloat{position:fixed;bottom:24px;right:24px;z-index:96;width:54px;height:54px;border-radius:50%;
+  background:rgba(10,8,6,.85);border:1px solid var(--accent);display:flex;align-items:center;justify-content:center;
+  text-decoration:none;transition:.3s;backdrop-filter:blur(8px)}
+#wafloat:hover{background:var(--accent)}
+#wafloat svg{width:26px;height:26px;fill:var(--accent);transition:.3s}
+#wafloat:hover svg{fill:#000}
+</style>
+</head>
+<body>
+
+<div id="veil">
+  <div class="vlogo">CAVEAU</div>
+  <div class="vbar"><i></i></div>
+</div>
+
+<div id="promobar" aria-label="Promozioni">
+  <span class="pmsg on">Spedizione gratis per ordini sopra i 59 €</span>
+  <span class="pmsg">Promo limitata · campioncini omaggio con ogni acquisto</span>
+  <span class="pmsg">Iscriviti alla newsletter · 10% sul tuo primo ordine</span>
+  <span class="pmsg">Ritiro in sede · Via Roma 52, Marcianise</span>
+  <span class="pmsg">Paga in 3 rate senza interessi con Klarna</span>
+</div>
+
+<nav id="nav">
+  <a class="logo" href="#top">CAVEAU<b>.</b></a>
+  <ul>
+    <li><a class="nl" href="#categorie">PROFUMI</a></li>
+    <li><a class="nl" href="#catalogo" onclick="selectCategory(6)">DISCOVERY KIT</a></li>
+    <li><a class="nl" href="#maison">MAISON</a></li>
+    <li><a class="nl" href="#maison">CONTATTI</a></li>
+  </ul>
+</nav>
+
+<div id="journey" style="position:relative" >
+  <canvas id="gl"></canvas>
+  <div id="hud">
+    <div class="beat" id="beat0">
+      <div class="eyebrow">Marcianise · Via Roma 52</div>
+      <h1 class="splash-title">CAVEAU</h1>
+      <div class="splash-sub">Profumeria Artistica</div>
+      <div class="scrollhint">Scorri per entrare</div>
+    </div>
+    <div class="beat" id="beat1">
+      <div class="eyebrow">Custodi del raro</div>
+      <div class="manifesto">
+        <div class="m1">Ogni fragranza<br>è un <em>gioiello</em></div>
+        <div class="mdia">◆ ◆ ◆</div>
+        <div class="m2">I profumi più <b>rari</b> ed <b>invidiati</b> · per chi cerca la vera <b>distinzione</b></div>
+      </div>
+    </div>
+    <div class="beat" id="beat2">
+      <div class="h-big"><span class="top">DENTRO IL</span><span class="low">caveau</span></div>
+    </div>
+    <div class="beat" id="beatFinal">
+      <div class="h-big"><span class="top">LA COLLEZIONE</span><span class="low">ti attende</span></div>
+      <div class="finale-foot">
+        <a class="cta" href="#catalogo">oppure sfoglia tutto il catalogo</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="marquee"><div class="track" id="mqtrack"></div></div>
+
+<section id="categorie">
+  <div class="sec-head">
+    <div class="eyebrow">Scegli il tuo percorso</div>
+    <h2>Per chi <i>cerchi</i>?</h2>
+    <p id="subcount"></p>
+  </div>
+  <div id="catgrid"></div>
+  <button id="allbtn" onclick="selectCategory(0)">Tutta la collezione</button>
+</section>
+
+<section id="catalogo">
+<div id="catalogWrap" hidden>
+  <div class="sec-head">
+    <div class="eyebrow">Il Catalogo</div>
+    <h2 id="catTitle">Profumi <i>d'autore</i></h2>
+  </div>
+  <div id="filters">
+    <input id="q" type="search" placeholder="Cerca un profumo, una nota, una maison…">
+    <select id="brand"><option value="">Tutte le maison</option></select>
+    <select id="sort">
+      <option value="feat">In evidenza</option>
+      <option value="az">Nome A→Z</option>
+      <option value="plo">Prezzo crescente</option>
+      <option value="phi">Prezzo decrescente</option>
+    </select>
+  </div>
+  <div id="chips"></div>
+  <div id="count"></div>
+  <div id="grid"></div>
+  <button id="more">Carica altri</button>
+</div>
+</section>
+
+<section id="newsletter">
+  <div class="inner">
+    <div class="eyebrow">Offerte esclusive</div>
+    <h3>Il <i>10%</i> sul tuo primo ordine</h3>
+    <p>Iscriviti alla newsletter di Caveau: anteprime sulle nuove maison, promozioni riservate e novità dal caveau, direttamente nella tua casella.</p>
+    <a class="nl-cta" href="https://caveauprofumeriaartistica.com/" target="_blank" rel="noopener">Iscriviti sul sito ufficiale</a>
+  </div>
+</section>
+
+<section id="social">
+  <h3>Il caveau, ogni giorno, su <i>Instagram</i></h3>
+  <div class="handle"><a href="https://www.instagram.com/caveauprofumeriartistica/" target="_blank" rel="noopener">@caveauprofumeriartistica</a></div>
+  <div id="igrid"></div>
+  <div class="socbtns">
+    <a href="https://www.instagram.com/caveauprofumeriartistica/" target="_blank" rel="noopener">Seguici su Instagram</a>
+    <a href="https://www.facebook.com/profile.php?id=61567795941212" target="_blank" rel="noopener">Facebook</a>
+  </div>
+</section>
+
+<section id="maison">
+  <div class="benefits">
+    <div><b>Spedizione gratuita</b><span>per ordini sopra i 59 €</span></div>
+    <div><b>Campioncini omaggio</b><span>con ogni acquisto</span></div>
+    <div><b>Ritiro in sede</b><span>Via Roma 52, Marcianise (CE)</span></div>
+    <div><b>Klarna</b><span>paga in 3 rate senza interessi</span></div>
+  </div>
+  <div class="mgrid">
+    <div>
+      <div class="eyebrow">La Maison</div>
+      <h2>Un caveau di <i>fragranze</i> nel cuore di Marcianise</h2>
+      <p>Caveau Profumeria Artistica nasce per custodire ciò che altrove non si trova: essenze rare, maison di nicchia, edizioni che diventano oggetti del desiderio. Rivenditori autorizzati delle più grandi case profumiere artistiche — da Creed a Xerjoff, da Kilian a Nishane — accompagniamo ogni ospite in un percorso olfattivo su misura, nel nostro showroom o a distanza.</p>
+      <p style="margin-top:14px">Campioncini omaggio con ogni acquisto · Spedizione gratuita sopra i 59€ · Confezione regalo dedicata.</p>
+    </div>
+    <div class="infobox">
+      <div class="irow"><span class="il">Showroom</span><span class="iv">Via Roma 52, 81025 Marcianise (CE)</span></div>
+      <div class="irow"><span class="il">Orari</span><span class="iv">Lun – Sab · 09:30–13:00 / 16:30–20:00<br>Domenica chiuso</span></div>
+      <div class="irow"><span class="il">Telefono</span><span class="iv"><a href="tel:+393923943218">(+39) 392 394 3218</a></span></div>
+      <div class="irow"><span class="il">Email</span><span class="iv"><a href="mailto:info@caveauprofumeriaartistica.com">info@caveauprofumeriaartistica.com</a></span></div>
+      <div class="irow"><span class="il">Online</span><span class="iv"><a href="https://caveauprofumeriaartistica.com" target="_blank" rel="noopener">caveauprofumeriaartistica.com</a></span></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="fgrid">
+    <div>
+      <div class="flogo">CAVEAU<b>.</b></div>
+      <p>Profumeria Artistica — Custodi dei Profumi più Rari ed Invidiati. Rivenditori autorizzati delle grandi maison di nicchia, a Marcianise e online.</p>
+    </div>
+    <div>
+      <h4>Contatti</h4>
+      <ul>
+        <li><a href="https://maps.google.com/?q=Via+Roma+52,+81025+Marcianise+CE" target="_blank" rel="noopener">Via Roma 52, 81025 Marcianise (CE)</a></li>
+        <li><a href="tel:+393923943218">(+39) 392 394 3218</a></li>
+        <li><a href="mailto:info@caveauprofumeriaartistica.com">info@caveauprofumeriaartistica.com</a></li>
+        <li>Lun – Sab · 09:30–13:00 / 16:30–20:00</li>
+      </ul>
+    </div>
+    <div>
+      <h4>Collegamenti</h4>
+      <ul>
+        <li><a href="#categorie">Catalogo profumi</a></li>
+        <li><a href="#catalogo" onclick="selectCategory(6)">Discovery Kit</a></li>
+        <li><a href="https://caveauprofumeriaartistica.com/products/caveau-buono-regalo" target="_blank" rel="noopener">Gift Card</a></li>
+        <li><a href="https://caveauprofumeriaartistica.com/pages/il-nostro-caveau" target="_blank" rel="noopener">Il nostro Caveau</a></li>
+        <li><a href="https://caveauprofumeriaartistica.com" target="_blank" rel="noopener">Sito ufficiale</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Assistenza</h4>
+      <ul>
+        <li><a href="https://caveauprofumeriaartistica.com/pages/contact" target="_blank" rel="noopener">Contatti privati</a></li>
+        <li><a href="https://caveauprofumeriaartistica.com/pages/reso-e-spedizioni" target="_blank" rel="noopener">Reso e spedizioni</a></li>
+        <li><a href="https://caveauprofumeriaartistica.com/pages/domande-frequenti" target="_blank" rel="noopener">Domande frequenti</a></li>
+        <li><a href="https://caveauprofumeriaartistica.com/pages/diritto-di-recesso" target="_blank" rel="noopener">Diritto di recesso</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="pays">
+    <span>VISA</span><span>MASTERCARD</span><span>AMEX</span><span>PAYPAL</span><span>KLARNA</span>
+    <span>APPLE PAY</span><span>GOOGLE PAY</span><span>SHOP PAY</span><span>MAESTRO</span><span>UNION PAY</span>
+    <span>BANCONTACT</span><span>IDEAL</span><span>MOBILEPAY</span>
+  </div>
+  <div class="fcredits"><b>CAVEAU</b> Profumeria Artistica · Marcianise (CE) — spedizione gratuita sopra i 59 € · campioncini omaggio con ogni acquisto</div>
+</footer>
+
+<a id="wafloat" href="https://wa.me/393923943218?text=Ciao!%20Vorrei%20informazioni%20sui%20vostri%20profumi." target="_blank" rel="noopener" aria-label="Scrivici su WhatsApp">
+  <svg viewBox="0 0 32 32"><path d="M16 3C9.4 3 4 8.4 4 15c0 2.1.6 4.2 1.6 6L4 29l8.2-1.5c1.2.5 2.5.8 3.8.8 6.6 0 12-5.4 12-12S22.6 3 16 3zm0 22c-1.2 0-2.4-.3-3.5-.8l-.6-.3-4.9.9 1-4.7-.3-.6C6.6 17.9 6 16.5 6 15 6 9.5 10.5 5 16 5s10 4.5 10 10-4.5 10-10 10zm5.3-7.2c-.3-.2-1.7-.9-2-1s-.5-.2-.7.2-.8 1-.9 1.2-.3.2-.6.1c-.3-.2-1.2-.5-2.3-1.5-.9-.8-1.5-1.8-1.6-2.1s0-.5.1-.6l.4-.5c.2-.2.2-.3.3-.5s0-.4 0-.5c-.1-.2-.7-1.7-1-2.3-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4s-1 1-1 2.5 1.1 2.9 1.2 3.1c.2.2 2.1 3.2 5.1 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.7-.7 2-1.4.2-.7.2-1.3.2-1.4-.1-.1-.3-.2-.7-.4z"/></svg>
+</a>
+
+<div id="overlay">
+  <div id="modal">
+    <div id="mimg"><img id="mimgEl" alt=""></div>
+    <div id="minfo">
+      <button id="mclose" aria-label="Chiudi">×</button>
+      <div id="mbrand"></div>
+      <div id="mname"></div>
+      <div id="mcat"></div>
+      <div class="szl">Formato</div>
+      <div id="msizes"></div>
+      <div id="mprice"></div>
+      <div id="mavail"></div>
+      <div id="mlink">
+        <a class="buy" id="mbuy" target="_blank" rel="noopener">Acquista sul sito</a>
+        <a class="wa" id="mwa" target="_blank" rel="noopener">Richiedi su WhatsApp</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="catalog.js?v=3"></script>
+<script src="igfeed.js?v=1"></script>
+<script>
+/* catalogo: helper condivisi con le sezioni sotto */
+const CAT = window.CATALOG;
+const fmt = n => n.toLocaleString('it-IT',{style:'currency',currency:'EUR'});
+const minPrice = p => Math.min(...p.v.map(v=>v.p));
+const byHandle = {}; CAT.forEach(p=>byHandle[p.h]=p);
+
+/* ============================================================
+   VIDEO JOURNEY — il filmato del caveau avanza con lo scroll:
+   240 fotogrammi disegnati su canvas, mappati sulla posizione
+   di scorrimento (con sosta finale prima del catalogo)
+   ============================================================ */
+const FRAME_COUNT = 240;
+const framePath = i => `frames/f_${String(i+1).padStart(3,'0')}.jpg`;
+const canvas = document.getElementById('gl');
+const ctx = canvas.getContext('2d');
+const frames = new Array(FRAME_COUNT);
+let loaded = 0;
+function loadFrame(i, cb){
+  if (frames[i]) { cb && cb(); return; }
+  const im = new Image();
+  im.onload = ()=>{ frames[i] = im; loaded++; cb && cb(); };
+  im.src = framePath(i);
+}
+loadFrame(0, ()=>{ curFrame = -1; draw(); });
+for (let i = 1; i < FRAME_COUNT; i++) setTimeout(()=>loadFrame(i, i < 24 ? draw : null), i*12);
+
+const journeyEl = document.getElementById('journey');
+let target = 0, prog = 0, curFrame = -1;
+function onScroll(){
+  /* il viaggio si completa all'85%: l'ultimo 15% è la sosta sul finale */
+  const max = Math.max(1, (journeyEl.offsetHeight - innerHeight) * 0.85);
+  target = Math.min(1, Math.max(0, scrollY / max));
+}
+addEventListener('scroll', onScroll, {passive:true});
+
+const lerp = (a,b,t)=>a+(b-a)*t;
+const smooth = (a,b,x)=>{ const t = Math.min(1, Math.max(0,(x-a)/(b-a))); return t*t*(3-2*t); };
+
+function resize(){
+  const dpr = Math.min(devicePixelRatio, 2);
+  canvas.width = innerWidth * dpr;
+  canvas.height = innerHeight * dpr;
+  curFrame = -1; draw();
+}
+addEventListener('resize', resize);
+
+function draw(){
+  const want = Math.round(prog * (FRAME_COUNT - 1));
+  /* usa il fotogramma caricato più vicino a quello richiesto */
+  let j = want;
+  while (j >= 0 && !frames[j]) j--;
+  if (j < 0){ j = want; while (j < FRAME_COUNT && !frames[j]) j++; if (j >= FRAME_COUNT) return; }
+  if (j === curFrame) return;
+  curFrame = j;
+  const im = frames[j], cw = canvas.width, ch = canvas.height;
+  /* riempi lo schermo ma senza mai zoomare oltre il 35%: sugli
+     schermi stretti il video resta leggibile e lo spazio residuo
+     è scuro, in tono col sito */
+  const cover = Math.max(cw/im.width, ch/im.height);
+  const contain = Math.min(cw/im.width, ch/im.height);
+  const s = Math.min(cover, contain*1.35);
+  const w = im.width*s, h = im.height*s;
+  ctx.imageSmoothingQuality = 'high';
+  ctx.fillStyle = '#08070a';
+  ctx.fillRect(0, 0, cw, ch);
+  ctx.drawImage(im, (cw-w)/2, (ch-h)/2, w, h);
+  /* sfumature morbide sui bordi della striscia video */
+  if (h < ch - 2){
+    const y0 = (ch-h)/2, fade = Math.min(90, h*.18);
+    let g = ctx.createLinearGradient(0, y0, 0, y0+fade);
+    g.addColorStop(0, '#08070a'); g.addColorStop(1, 'rgba(8,7,10,0)');
+    ctx.fillStyle = g; ctx.fillRect(0, y0, cw, fade);
+    g = ctx.createLinearGradient(0, y0+h, 0, y0+h-fade);
+    g.addColorStop(0, '#08070a'); g.addColorStop(1, 'rgba(8,7,10,0)');
+    ctx.fillStyle = g; ctx.fillRect(0, y0+h-fade, cw, fade);
+  }
+}
+
+/* ---------- text beats ---------- */
+const beats = {
+  b0: document.getElementById('beat0'),
+  b1: document.getElementById('beat1'),
+  b2: document.getElementById('beat2'),
+  bf: document.getElementById('beatFinal'),
+};
+const hud = document.getElementById('hud');
+const ctaEl = document.querySelector('#beatFinal .cta');
+function beatOpacity(el, p, i, o, oEnd){
+  const v = smooth(i, i+.05, p) * (1 - smooth(o, oEnd, p));
+  el.style.opacity = v;
+  el.style.transform = `translateY(${(1-v)*26}px)`;
+}
+function updateHud(p){
+  const v0 = 1 - smooth(.05, .11, p);
+  beats.b0.style.opacity = v0;
+  beats.b0.style.transform = `translateY(${(1-v0)*26}px)`;
+  beatOpacity(beats.b1, p, .13, .30, .38);
+  beatOpacity(beats.b2, p, .40, .56, .64);
+  const vf = smooth(.84, .92, p);
+  beats.bf.style.opacity = vf;
+  beats.bf.style.transform = `translateY(${(1-vf)*26}px)`;
+  ctaEl.style.pointerEvents = vf > .5 ? 'auto' : 'none';
+  const past = journeyEl.getBoundingClientRect().bottom < innerHeight*.5;
+  hud.classList.toggle('gone', past);
+}
+
+/* ---------- render loop ---------- */
+let lastT = performance.now();
+function tick(now){
+  const dt = Math.min(.05, (now - lastT)/1000); lastT = now;
+  if (!isFinite(prog)) prog = 0;
+  if (!isFinite(target)) target = 0;
+  prog = lerp(prog, target, Math.min(1, dt*4.5));
+  draw();
+  updateHud(prog);
+  requestAnimationFrame(tick);
+}
+resize(); onScroll();
+requestAnimationFrame(tick);
+
+/* veil: via quando l'inizio del filmato è pronto */
+const veilStart = performance.now();
+const veilTimer = setInterval(()=>{
+  if (loaded >= 20 || performance.now() - veilStart > 6000){
+    document.getElementById('veil').classList.add('off');
+    clearInterval(veilTimer);
+  }
+}, 200);
+
+/* nav solidify */
+const nav = document.getElementById('nav');
+addEventListener('scroll', ()=> nav.classList.toggle('solid', scrollY > innerHeight*.4), {passive:true});
+
+/* ============================================================
+   CATALOG — 1264 real products from caveauprofumeriaartistica.com
+   ============================================================ */
+/* marquee */
+const brandsAll = [...new Set(CAT.map(p=>p.b))].sort((a,b)=>a.localeCompare(b));
+const topBrands = ['Creed','Xerjoff','Kilian Paris','Nishane','Parfums De Marly','Initio Parfums Privés','Tiziana Terenzi','Memo Paris','Carthusia','Bois 1920','The Merchant of Venice','Escentric Molecules'];
+const mqHtml = topBrands.map(b=>`<span>${b}<i>◆</i></span>`).join('');
+document.getElementById('mqtrack').innerHTML = mqHtml + mqHtml;
+
+/* filters */
+const brandSel = document.getElementById('brand');
+brandsAll.forEach(b=>{ const o=document.createElement('option'); o.value=b; o.textContent=b; brandSel.appendChild(o); });
+/* selections — genere ricavato dalle collezioni reali dello shop */
+const SELS = [
+  {label:'Tutta la collezione', short:'Tutto', test:p=>true, art:'absolu-aventus-millesime-50-ml-spray'},
+  {label:'Profumi Uomo', short:'Uomo', test:p=>p.g==='u', art:'layton-edp-125-ml'},
+  {label:'Profumi Donna', short:'Donna', test:p=>p.g==='d', art:'kirke-extrait-de-parfum-100-ml'},
+  {label:'Profumi Unisex', short:'Unisex', test:p=>p.g==='x', art:'hacivat-extrait-de-parfum-100-ml'},
+  {label:"Profumatori d'Ambiente", short:'Ambiente', test:p=>p.c==="PROFUMATORI D'AMBIENTE", art:'rosso-nobile-500-ml-fragranza-collezione'},
+  {label:'Bagno & Corpo', short:'Bagno e corpo', test:p=>p.c==='BAGNO & CORPO', art:'crema-corpo-blu-indaco-250-ml'},
+  {label:'Discovery Kit', short:'Discovery', test:p=>p.k, cover:true},
+];
+let activeSel = 0;
+const chipsEl = document.getElementById('chips');
+SELS.forEach((s,i)=>{
+  const c = document.createElement('button'); c.className='chip'+(i===0?' on':'');
+  c.textContent = s.short;
+  c.onclick = ()=>setSel(i);
+  chipsEl.appendChild(c);
+});
+function setSel(i){
+  activeSel = i;
+  document.querySelectorAll('#chips .chip').forEach((x,k)=>x.classList.toggle('on', k===i));
+  const words = SELS[i].label.split(' ');
+  document.getElementById('catTitle').innerHTML =
+    i===0 ? "Profumi <i>d'autore</i>" : words.slice(0,-1).join(' ') + ' <i>' + words.at(-1) + '</i>';
+  apply();
+}
+function selectCategory(i){
+  document.getElementById('catalogWrap').hidden = false;
+  setSel(i);
+  document.getElementById('catalogo').scrollIntoView({behavior:'smooth'});
+}
+
+/* category picker: arched niche cards */
+{
+  document.getElementById('catgrid').innerHTML = [1,2,3,4,5,6].map(i=>{
+    const s = SELS[i];
+    const n = CAT.filter(s.test).length;
+    let media = '';
+    if (s.cover){
+      const p = CAT.find(p=>s.test(p) && p.i);
+      if (p) media = `<img class="cover-img" loading="lazy" src="${p.i}${p.i.includes('?')?'&':'?'}width=520" alt="${s.label}">`;
+    } else {
+      /* original studio photo inside the backlit white niche */
+      const p = byHandle[s.art];
+      const img = p && p.i ? p.i + (p.i.includes('?')?'&':'?') + 'width=340' : '';
+      media = `<div class="ci"><img loading="lazy" src="${img}" alt="${s.label}"></div>`;
+    }
+    return `<div class="catcard" onclick="selectCategory(${i})">
+      ${media}
+      <div class="cl">${s.short}</div>
+      <div class="cn">${n} referenze</div>
+    </div>`;
+  }).join('');
+}
+
+document.getElementById('subcount').textContent =
+  `${CAT.length} referenze · ${brandsAll.length} maison — catalogo reale di Caveau Profumeria Artistica`;
+
+const grid = document.getElementById('grid');
+const PAGE = 48;
+let filtered = CAT, shown = 0;
+
+function cardHtml(p, idx){
+  const mp = minPrice(p);
+  const avail = p.v.some(v=>v.a);
+  const img = p.i ? `<img loading="lazy" src="${p.i}${p.i.includes('?')?'&':'?'}width=420" alt="${p.n.replace(/"/g,'&quot;')}">`
+                  : `<div class="noimg">✦</div>`;
+  return `<div class="pcard" data-i="${idx}">
+    <div class="ph">${img}${avail?'':'<span class="badge">Esaurito</span>'}</div>
+    <div class="pi">
+      <div class="pb">${p.b}</div>
+      <div class="pn">${p.n}</div>
+      <div class="pp">${p.v.length>1?'da ':''}<b>${fmt(mp)}</b>${p.v.length>1?` · ${p.v.length} formati`:''}</div>
+    </div>
+  </div>`;
+}
+function renderMore(){
+  const next = filtered.slice(shown, shown+PAGE);
+  grid.insertAdjacentHTML('beforeend', next.map(p=>cardHtml(p, CAT.indexOf(p))).join(''));
+  shown += next.length;
+  document.getElementById('more').hidden = shown >= filtered.length;
+  document.getElementById('count').textContent =
+    `${Math.min(shown, filtered.length)} di ${filtered.length} profumi`;
+}
+function apply(){
+  const q = document.getElementById('q').value.trim().toLowerCase();
+  const b = brandSel.value;
+  const s = document.getElementById('sort').value;
+  filtered = CAT.filter(p=>
+    (!b || p.b===b) &&
+    SELS[activeSel].test(p) &&
+    (!q || (p.n+' '+p.b).toLowerCase().includes(q))
+  );
+  if (s==='az') filtered = [...filtered].sort((a,b)=>a.n.localeCompare(b.n));
+  if (s==='plo') filtered = [...filtered].sort((a,b)=>minPrice(a)-minPrice(b));
+  if (s==='phi') filtered = [...filtered].sort((a,b)=>minPrice(b)-minPrice(a));
+  grid.innerHTML=''; shown=0; renderMore();
+}
+document.getElementById('q').addEventListener('input', apply);
+brandSel.addEventListener('change', apply);
+document.getElementById('sort').addEventListener('change', apply);
+document.getElementById('more').onclick = renderMore;
+function quickFilter(q){ const el=document.getElementById('q'); el.value=q; apply(); }
+apply();
+
+/* ---------- product modal ---------- */
+const overlay = document.getElementById('overlay');
+let cur = null;
+grid.addEventListener('click', e=>{
+  const card = e.target.closest('.pcard'); if(!card) return;
+  openProduct(CAT[+card.dataset.i]);
+});
+function openProduct(p){
+  cur = p;
+  document.getElementById('mbrand').textContent = p.b;
+  document.getElementById('mname').textContent = p.n;
+  document.getElementById('mcat').textContent = p.c.toLowerCase();
+  const im = document.getElementById('mimgEl');
+  if (p.i){ im.src = `${p.i}${p.i.includes('?')?'&':'?'}width=800`; im.style.display=''; }
+  else im.style.display='none';
+  const sz = document.getElementById('msizes'); sz.innerHTML='';
+  p.v.forEach((v,k)=>{
+    const b = document.createElement('button');
+    b.className = 'size'+(v.a?'':' soldout');
+    b.textContent = v.s;
+    b.onclick = ()=> selectSize(k);
+    sz.appendChild(b);
+  });
+  const firstOk = p.v.findIndex(v=>v.a);
+  selectSize(firstOk === -1 ? 0 : firstOk);
+  overlay.classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function selectSize(k){
+  const v = cur.v[k];
+  document.querySelectorAll('#msizes .size').forEach((b,i)=>b.classList.toggle('on', i===k));
+  document.getElementById('mprice').innerHTML = fmt(v.p) + `<small>${v.s}</small>`;
+  const av = document.getElementById('mavail');
+  av.textContent = v.a ? '● Disponibile — spedizione gratuita sopra 59€' : '● Al momento esaurito in questo formato';
+  av.className = v.a ? 'ok' : 'ko';
+  const url = `https://caveauprofumeriaartistica.com/products/${cur.h}`;
+  document.getElementById('mbuy').href = url;
+  document.getElementById('mwa').href =
+    `https://wa.me/393923943218?text=${encodeURIComponent(`Ciao! Vorrei informazioni su ${cur.n} (${v.s}) — ${fmt(v.p)}`)}`;
+}
+function closeModal(){ overlay.classList.remove('open'); document.body.style.overflow=''; }
+document.getElementById('mclose').onclick = closeModal;
+overlay.addEventListener('click', e=>{ if(e.target===overlay) closeModal(); });
+addEventListener('keydown', e=>{ if(e.key==='Escape') closeModal(); });
+
+/* ---------- promo bar rotation ---------- */
+const pmsgs = document.querySelectorAll('#promobar .pmsg');
+let pIdx = 0;
+setInterval(()=>{
+  pmsgs[pIdx].classList.remove('on');
+  pIdx = (pIdx+1) % pmsgs.length;
+  pmsgs[pIdx].classList.add('on');
+}, 3800);
+
+/* ---------- instagram: real posts from the store's live feed ---------- */
+document.getElementById('igrid').innerHTML = (window.IG_POSTS||[]).map(p=>
+  `<a href="${p.u}" target="_blank" rel="noopener">
+     <img src="${p.i}" alt="Post Instagram di Caveau Profumeria Artistica" loading="lazy">
+     ${p.v?'<span class="play">▶</span>':''}
+     <span class="igcap">${(p.c||'').replace(/</g,'&lt;')}</span>
+   </a>`).join('');
+</script>
+</body>
+</html>

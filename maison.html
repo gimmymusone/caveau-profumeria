@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Il nostro Caveau — CAVEAU Profumeria Artistica</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&family=Fraunces:opsz,wght@9..144,700&display=swap" rel="stylesheet">
+<style>
+:root{--lilac:#b8aad0;--ink:#000;--parchment:#f2e9de;--rose:#ddc9c0;--ivory:#fcfaf1;--gold:#d4af37;--night:#0b0a08;
+  --sans:'Manrope',ui-sans-serif,system-ui,sans-serif;--display:'Fraunces',serif}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--parchment);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.8}
+.promo{background:var(--night);color:var(--gold);font-size:12px;letter-spacing:.1em;text-transform:uppercase;
+  text-align:center;padding:9px 14px;border-bottom:1px solid rgba(212,175,55,.4)}
+header{background:var(--parchment);border-bottom:1px solid var(--ink);display:grid;grid-template-columns:1fr auto 1fr;
+  align-items:center;padding:12px clamp(20px,4vw,56px)}
+header .logo{grid-column:2;display:flex;align-items:center;text-decoration:none}
+header .logo img{height:clamp(24px,2.4vw,34px);width:auto;display:block}
+header ul{grid-column:1;grid-row:1;display:flex;gap:clamp(16px,2.6vw,30px);list-style:none}
+header a.nl{color:var(--ink);text-decoration:none;font-size:12px;letter-spacing:.6px;text-transform:uppercase}
+header a.nl:hover{text-decoration:underline;text-underline-offset:4px}
+@media(max-width:760px){header ul{display:none}}
+main{max-width:820px;margin:0 auto;padding:70px clamp(18px,5vw,40px) 90px}
+.eyebrow{font-size:12px;font-weight:800;letter-spacing:.14em;color:#a8862e;text-transform:uppercase;margin-bottom:14px}
+h1{font-size:clamp(38px,6vw,64px);font-weight:800;letter-spacing:-.04em;line-height:.95;margin-bottom:34px}
+h2{font-size:clamp(20px,2.4vw,26px);font-weight:800;letter-spacing:-.02em;margin:44px 0 12px}
+p,li{color:#1c1a16}
+ul.disc{padding-left:22px;margin:10px 0}
+a{color:var(--ink)}
+.ghost{display:inline-block;margin-top:8px;font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink);text-decoration:none;border-bottom:2px solid var(--ink);padding-bottom:3px}
+.ghost:hover{opacity:.6}
+.box{border:1px solid var(--ink);background:var(--ivory);padding:26px;margin:26px 0}
+.box b{display:block;font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#a8862e;margin-bottom:6px}
+dl dt{font-weight:800;margin-top:26px;font-size:18px;letter-spacing:-.01em}
+dl dd{margin:6px 0 0}
+footer{background:var(--night);border-top:1px solid rgba(212,175,55,.35);padding:60px clamp(18px,4vw,56px) 28px;color:#cfc6b2;font-size:13px}
+.fgrid{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;gap:40px}
+@media(max-width:820px){.fgrid{grid-template-columns:1fr}}
+.fgrid .flogo{font-family:var(--display);font-weight:700;font-size:30px;color:#f2e9de}
+.fgrid .flogo b{color:var(--gold)}
+.fgrid p{line-height:1.8;margin-top:12px;color:#cfc6b2}
+.fgrid h4{font-size:12px;font-weight:800;letter-spacing:.14em;color:var(--gold);text-transform:uppercase;margin-bottom:14px}
+.fgrid ul{list-style:none;padding:0}
+.fgrid li{margin-bottom:8px}
+.fgrid a{color:#e6ded0;text-decoration:none;border-bottom:1px solid rgba(212,175,55,.4)}
+.fgrid a:hover{color:var(--gold)}
+.pays{max-width:1280px;margin:40px auto 0;padding-top:20px;border-top:1px solid rgba(212,175,55,.25);display:flex;gap:5px 18px;flex-wrap:wrap;justify-content:center}
+.pays span{font-size:12px;letter-spacing:.6px;color:#b5ac97}
+.fcredits{text-align:center;margin-top:24px;font-size:12px;color:#8a8272}
+.fcredits b{color:var(--gold)}
+#wafloat{position:fixed;bottom:24px;right:24px;z-index:96;width:48px;height:48px;background:var(--night);
+  border:1px solid var(--gold);display:flex;align-items:center;justify-content:center}
+#wafloat svg{width:24px;height:24px;fill:var(--gold)}
+</style>
+</head>
+<body>
+<div class="promo">Custodi dei profumi più rari ed invidiati</div>
+<header>
+  <ul>
+    <li><a class="nl" href="index.html#categorie">Profumi</a></li>
+    <li><a class="nl" href="index.html#categorie">Set Regalo</a></li>
+    <li><a class="nl" href="maison.html">Maison</a></li>
+    <li><a class="nl" href="contatti.html">Contatti</a></li>
+  </ul>
+  <a class="logo" href="index.html"><img src="assets/logo-caveau.png" alt="Caveau"></a>
+</header>
+<main>
+
+<div class="eyebrow">La Maison</div>
+<h1>Il nostro Caveau</h1>
+<p>Caveau nasce dalla passione per l'alta profumeria e dalla cura per i dettagli. Selezioniamo con dedizione i brand più raffinati per offrirti fragranze che non sono solo profumi, ma vere e proprie esperienze sensoriali. Ogni scelta è pensata per chi cerca unicità, eleganza e personalità.</p>
+<h2>Un caveau nel cuore di Marcianise</h2>
+<p>Il nostro showroom di Via Roma 52 custodisce oltre 1.200 referenze di 62 maison artistiche — da Creed a Xerjoff, da Kilian a Nishane, da Parfums de Marly a Tiziana Terenzi. Rivenditori autorizzati, accompagniamo ogni ospite in un percorso olfattivo su misura, in negozio o a distanza.</p>
+<div class="box"><b>Perché sceglierci</b>
+Campioncini omaggio con ogni acquisto · Spedizione gratuita sopra i 59 € · Ritiro in sede · Pagamento in 3 rate con Klarna · Confezione regalo dedicata</div>
+<h2>Vieni a trovarci</h2>
+<p>Lun – Sab · 09:30–13:00 / 16:30–20:00 — Domenica chiuso.<br>
+Via Roma 52, 81025 Marcianise (CE) · <a href="tel:+393923943218">(+39) 392 394 3218</a></p>
+<a class="ghost" href="index.html#categorie">Esplora la collezione ›</a>
+
+</main>
+<footer>
+  <div class="fgrid">
+    <div>
+      <div class="flogo">CAVEAU<b>.</b></div>
+      <p>Profumeria Artistica — Custodi dei Profumi più Rari ed Invidiati. Rivenditori autorizzati delle grandi maison di nicchia, a Marcianise e online.</p>
+    </div>
+    <div>
+      <h4>Contatti</h4>
+      <ul>
+        <li><a href="https://maps.google.com/?q=Via+Roma+52,+81025+Marcianise+CE" target="_blank" rel="noopener">Via Roma 52, 81025 Marcianise (CE)</a></li>
+        <li><a href="tel:+393923943218">(+39) 392 394 3218</a></li>
+        <li><a href="mailto:info@caveauprofumeriaartistica.com">info@caveauprofumeriaartistica.com</a></li>
+        <li>Lun – Sab · 09:30–13:00 / 16:30–20:00</li>
+      </ul>
+    </div>
+    <div>
+      <h4>Collegamenti</h4>
+      <ul>
+        <li><a href="index.html#categorie">Catalogo profumi</a></li>
+        <li><a href="https://caveauprofumeriaartistica.com/products/caveau-buono-regalo" target="_blank" rel="noopener">Gift Card</a></li>
+        <li><a href="https://caveauprofumeriaartistica.com/pages/il-nostro-caveau" target="_blank" rel="noopener">Il nostro Caveau</a></li>
+        <li><a href="https://caveauprofumeriaartistica.com" target="_blank" rel="noopener">Sito ufficiale</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Assistenza</h4>
+      <ul>
+        <li><a href="https://caveauprofumeriaartistica.com/pages/contact" target="_blank" rel="noopener">Contatti privati</a></li>
+        <li><a href="https://caveauprofumeriaartistica.com/pages/reso-e-spedizioni" target="_blank" rel="noopener">Reso e spedizioni</a></li>
+        <li><a href="https://caveauprofumeriaartistica.com/pages/domande-frequenti" target="_blank" rel="noopener">Domande frequenti</a></li>
+        <li><a href="https://caveauprofumeriaartistica.com/pages/diritto-di-recesso" target="_blank" rel="noopener">Diritto di recesso</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="pays">
+    <span>VISA</span><span>MASTERCARD</span><span>AMEX</span><span>PAYPAL</span><span>KLARNA</span>
+    <span>APPLE PAY</span><span>GOOGLE PAY</span><span>SHOP PAY</span><span>MAESTRO</span><span>UNION PAY</span>
+    <span>BANCONTACT</span><span>IDEAL</span><span>MOBILEPAY</span>
+  </div>
+  <div class="fcredits"><b>CAVEAU</b> Profumeria Artistica · Marcianise (CE) — spedizione gratuita sopra i 59 € · campioncini omaggio con ogni acquisto</div>
+</footer>
+<a id="wafloat" href="https://wa.me/393923943218?text=Ciao!%20Vorrei%20informazioni%20sui%20vostri%20profumi." target="_blank" rel="noopener" aria-label="Scrivici su WhatsApp">
+  <svg viewBox="0 0 32 32"><path d="M16 3C9.4 3 4 8.4 4 15c0 2.1.6 4.2 1.6 6L4 29l8.2-1.5c1.2.5 2.5.8 3.8.8 6.6 0 12-5.4 12-12S22.6 3 16 3zm0 22c-1.2 0-2.4-.3-3.5-.8l-.6-.3-4.9.9 1-4.7-.3-.6C6.6 17.9 6 16.5 6 15 6 9.5 10.5 5 16 5s10 4.5 10 10-4.5 10-10 10zm5.3-7.2c-.3-.2-1.7-.9-2-1s-.5-.2-.7.2-.8 1-.9 1.2-.3.2-.6.1c-.3-.2-1.2-.5-2.3-1.5-.9-.8-1.5-1.8-1.6-2.1s0-.5.1-.6l.4-.5c.2-.2.2-.3.3-.5s0-.4 0-.5c-.1-.2-.7-1.7-1-2.3-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4s-1 1-1 2.5 1.1 2.9 1.2 3.1c.2.2 2.1 3.2 5.1 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.7-.7 2-1.4.2-.7.2-1.3.2-1.4-.1-.1-.3-.2-.7-.4z"/></svg>
+</a>
+</body>
+</html>
