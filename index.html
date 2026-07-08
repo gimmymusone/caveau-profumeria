@@ -644,12 +644,11 @@ function draw(){
   if (j === curFrame) return;
   curFrame = j;
   const im = frames[j], cw = canvas.width, ch = canvas.height;
-  /* riempi lo schermo ma senza mai zoomare oltre il 35%: sugli
-     schermi stretti il video resta leggibile e lo spazio residuo
-     è scuro, in tono col sito */
+  /* schermi verticali (telefono): riempi tutto lo schermo, niente bande nere.
+     schermi orizzontali (desktop): limita lo zoom al 35% per non ingrandire troppo */
   const cover = Math.max(cw/im.width, ch/im.height);
   const contain = Math.min(cw/im.width, ch/im.height);
-  const s = Math.min(cover, contain*1.35);
+  const s = ch >= cw ? cover : Math.min(cover, contain*1.35);
   const w = im.width*s, h = im.height*s;
   ctx.imageSmoothingQuality = 'high';
   ctx.fillStyle = '#000000';
