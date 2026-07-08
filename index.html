@@ -340,7 +340,7 @@ footer{position:relative;z-index:10;background:var(--night);border-top:1px solid
 .glow-card::before,.glow-card::after{content:'';position:absolute;inset:-2px;border-radius:20px;z-index:-1;
   opacity:0;pointer-events:none;transition:opacity .35s;
   background:conic-gradient(from var(--ga),
-    #ffffff 0%, #d9d9df 18%, #f7f7f9 36%, #c3c4cb 52%, #ffffff 68%, #e2e2e7 84%, #ffffff 100%);
+    rgba(255,255,255,1) 0%, rgba(255,255,255,.2) 25%, rgba(255,255,255,1) 50%, rgba(255,255,255,.2) 75%, rgba(255,255,255,1) 100%);
   animation:glowspin 4s linear infinite;animation-play-state:paused}
 .glow-card::after{filter:blur(14px)}
 .glow-card:hover,.glow-card:active{border-color:transparent !important;transform:translateY(-2px);
