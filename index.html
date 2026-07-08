@@ -401,7 +401,7 @@ footer{position:relative;z-index:10;background:var(--night);border-top:1px solid
   <button id="navtoggle" aria-label="Apri menu">☰</button>
   <ul>
     <li><a class="nl" href="#categorie">PROFUMI</a></li>
-    <li><a class="nl" href="#catalogo" onclick="selectCategory(6)">SET REGALO</a></li>
+    <li><a class="nl" href="catalogo.html?c=6">SET REGALO</a></li>
     <li><a class="nl" href="#maison">MAISON</a></li>
     <li><a class="nl" href="contatti.html">CONTATTI</a></li>
   </ul>
@@ -425,7 +425,7 @@ footer{position:relative;z-index:10;background:var(--night);border-top:1px solid
     <div class="beat" id="beatFinal">
       <div class="h-big"><span class="top">LA COLLEZIONE</span><span class="low">ti attende</span></div>
       <div class="finale-foot">
-        <a class="cta glass-btn" href="#catalogo">Sfoglia tutto il catalogo</a>
+        <a class="cta glass-btn" href="catalogo.html">Sfoglia tutto il catalogo</a>
       </div>
     </div>
   </div>
@@ -452,32 +452,8 @@ footer{position:relative;z-index:10;background:var(--night);border-top:1px solid
     <span class="sb-ray"></span><span class="sb-ray"></span><span class="sb-ray"></span>
     <span class="sb-ray"></span><span class="sb-ray"></span><span class="sb-ray"></span>
   </div>
-  <a class="sb-cover" title="Shop Profumi" aria-label="Shop Profumi" href="#catalogo" onclick="selectCategory(0)">Shop Profumi</a>
+  <a class="sb-cover" title="Shop Profumi" aria-label="Shop Profumi" href="catalogo.html">Shop Profumi</a>
 </div>
-
-<section id="catalogo">
-  <span class="sidelabel">Il catalogo — Marcianise</span>
-<div id="catalogWrap" hidden>
-  <div class="sec-head">
-    <div class="eyebrow">Il Catalogo</div>
-    <h2 id="catTitle">Profumi <i>d'autore</i></h2>
-  </div>
-  <div id="filters">
-    <input id="q" type="search" placeholder="Cerca un profumo, una nota, una maison…">
-    <select id="brand"><option value="">Tutte le maison</option></select>
-    <select id="sort">
-      <option value="feat">In evidenza</option>
-      <option value="az">Nome A→Z</option>
-      <option value="plo">Prezzo crescente</option>
-      <option value="phi">Prezzo decrescente</option>
-    </select>
-  </div>
-  <div id="chips"></div>
-  <div id="count"></div>
-  <div id="grid"></div>
-  <button id="more">Carica altri</button>
-</div>
-</section>
 
 <section id="newsletter">
   <div class="inner">
@@ -540,8 +516,8 @@ footer{position:relative;z-index:10;background:var(--night);border-top:1px solid
     <div>
       <h4>Collegamenti</h4>
       <ul>
-        <li><a href="#categorie">Catalogo profumi</a></li>
-        <li><a href="https://caveauprofumeriaartistica.com/products/caveau-buono-regalo" target="_blank" rel="noopener">Gift Card</a></li>
+        <li><a href="catalogo.html">Catalogo profumi</a></li>
+        <li><a href="catalogo.html?c=6">Set Regalo</a></li>
         <li><a href="maison.html">Il nostro Caveau</a></li>
         <li><a href="https://caveauprofumeriaartistica.com" target="_blank" rel="noopener">Sito ufficiale</a></li>
       </ul>
@@ -567,26 +543,6 @@ footer{position:relative;z-index:10;background:var(--night);border-top:1px solid
 <a id="wafloat" href="https://wa.me/393923943218?text=Ciao!%20Vorrei%20informazioni%20sui%20vostri%20profumi." target="_blank" rel="noopener" aria-label="Scrivici su WhatsApp">
   <svg viewBox="0 0 32 32"><path d="M16 3C9.4 3 4 8.4 4 15c0 2.1.6 4.2 1.6 6L4 29l8.2-1.5c1.2.5 2.5.8 3.8.8 6.6 0 12-5.4 12-12S22.6 3 16 3zm0 22c-1.2 0-2.4-.3-3.5-.8l-.6-.3-4.9.9 1-4.7-.3-.6C6.6 17.9 6 16.5 6 15 6 9.5 10.5 5 16 5s10 4.5 10 10-4.5 10-10 10zm5.3-7.2c-.3-.2-1.7-.9-2-1s-.5-.2-.7.2-.8 1-.9 1.2-.3.2-.6.1c-.3-.2-1.2-.5-2.3-1.5-.9-.8-1.5-1.8-1.6-2.1s0-.5.1-.6l.4-.5c.2-.2.2-.3.3-.5s0-.4 0-.5c-.1-.2-.7-1.7-1-2.3-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4s-1 1-1 2.5 1.1 2.9 1.2 3.1c.2.2 2.1 3.2 5.1 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.7-.7 2-1.4.2-.7.2-1.3.2-1.4-.1-.1-.3-.2-.7-.4z"/></svg>
 </a>
-
-<div id="overlay">
-  <div id="modal">
-    <div id="mimg"><img id="mimgEl" alt=""></div>
-    <div id="minfo">
-      <button id="mclose" aria-label="Chiudi">×</button>
-      <div id="mbrand"></div>
-      <div id="mname"></div>
-      <div id="mcat"></div>
-      <div class="szl">Formato</div>
-      <div id="msizes"></div>
-      <div id="mprice"></div>
-      <div id="mavail"></div>
-      <div id="mlink">
-        <a class="buy" id="mbuy" target="_blank" rel="noopener">Acquista sul sito</a>
-        <a class="wa" id="mwa" target="_blank" rel="noopener">Richiedi su WhatsApp</a>
-      </div>
-    </div>
-  </div>
-</div>
 
 <script src="catalog.js?v=3"></script>
 <script src="igfeed.js?v=2"></script>
@@ -733,9 +689,6 @@ const topBrands = ['Creed','Xerjoff','Kilian Paris','Nishane','Parfums De Marly'
 const mqHtml = topBrands.map(b=>`<span>${b}<i>◆</i></span>`).join('');
 document.getElementById('mqtrack').innerHTML = mqHtml + mqHtml;
 
-/* filters */
-const brandSel = document.getElementById('brand');
-brandsAll.forEach(b=>{ const o=document.createElement('option'); o.value=b; o.textContent=b; brandSel.appendChild(o); });
 /* selections — genere ricavato dalle collezioni reali dello shop */
 const SELS = [
   {label:'Tutta la collezione', short:'Tutto', test:p=>true, art:'absolu-aventus-millesime-50-ml-spray'},
@@ -746,26 +699,8 @@ const SELS = [
   {label:'Bagno & Corpo', short:'Bagno e corpo', test:p=>p.c==='BAGNO & CORPO', art:'crema-corpo-blu-indaco-250-ml'},
   {label:'Set Regalo', short:'Set Regalo', test:p=>p.k || p.c==='COFANETTI REGALO' || p.h==='caveau-buono-regalo'},
 ];
-let activeSel = 0;
-const chipsEl = document.getElementById('chips');
-SELS.forEach((s,i)=>{
-  const c = document.createElement('button'); c.className='chip'+(i===0?' on':'');
-  c.textContent = s.short;
-  c.onclick = ()=>setSel(i);
-  chipsEl.appendChild(c);
-});
-function setSel(i){
-  activeSel = i;
-  document.querySelectorAll('#chips .chip').forEach((x,k)=>x.classList.toggle('on', k===i));
-  const words = SELS[i].label.split(' ');
-  document.getElementById('catTitle').innerHTML =
-    i===0 ? "Profumi <i>d'autore</i>" : words.slice(0,-1).join(' ') + ' <i>' + words.at(-1) + '</i>';
-  apply();
-}
 function selectCategory(i){
-  document.getElementById('catalogWrap').hidden = false;
-  setSel(i);
-  document.getElementById('catalogo').scrollIntoView({behavior:'smooth'});
+  location.href = 'catalogo.html' + (i ? '?c=' + i : '');
 }
 
 /* category picker: DS&D editorial rows — foto intere, niente ritagli */
@@ -822,98 +757,6 @@ function selectCategory(i){
 
 document.getElementById('subcount').textContent =
   `${CAT.length} referenze · ${brandsAll.length} maison — catalogo reale di Caveau Profumeria Artistica`;
-
-const grid = document.getElementById('grid');
-const PAGE = 48;
-let filtered = CAT, shown = 0;
-
-function cardHtml(p, idx){
-  const mp = minPrice(p);
-  const avail = p.v.some(v=>v.a);
-  const img = p.i ? `<img loading="lazy" src="${p.i}${p.i.includes('?')?'&':'?'}width=420" alt="${p.n.replace(/"/g,'&quot;')}">`
-                  : `<div class="noimg">✦</div>`;
-  return `<div class="pcard" data-i="${idx}">
-    <div class="ph">${img}${avail?'':'<span class="badge">Esaurito</span>'}</div>
-    <div class="pi">
-      <div class="pb">${p.b}</div>
-      <div class="pn">${p.n}</div>
-      <div class="pp">${p.v.length>1?'da ':''}<b>${fmt(mp)}</b>${p.v.length>1?` · ${p.v.length} formati`:''}</div>
-    </div>
-  </div>`;
-}
-function renderMore(){
-  const next = filtered.slice(shown, shown+PAGE);
-  grid.insertAdjacentHTML('beforeend', next.map(p=>cardHtml(p, CAT.indexOf(p))).join(''));
-  shown += next.length;
-  document.getElementById('more').hidden = shown >= filtered.length;
-  document.getElementById('count').textContent =
-    `${Math.min(shown, filtered.length)} di ${filtered.length} profumi`;
-}
-function apply(){
-  const q = document.getElementById('q').value.trim().toLowerCase();
-  const b = brandSel.value;
-  const s = document.getElementById('sort').value;
-  filtered = CAT.filter(p=>
-    (!b || p.b===b) &&
-    SELS[activeSel].test(p) &&
-    (!q || (p.n+' '+p.b).toLowerCase().includes(q))
-  );
-  if (s==='az') filtered = [...filtered].sort((a,b)=>a.n.localeCompare(b.n));
-  if (s==='plo') filtered = [...filtered].sort((a,b)=>minPrice(a)-minPrice(b));
-  if (s==='phi') filtered = [...filtered].sort((a,b)=>minPrice(b)-minPrice(a));
-  grid.innerHTML=''; shown=0; renderMore();
-}
-document.getElementById('q').addEventListener('input', apply);
-brandSel.addEventListener('change', apply);
-document.getElementById('sort').addEventListener('change', apply);
-document.getElementById('more').onclick = renderMore;
-function quickFilter(q){ const el=document.getElementById('q'); el.value=q; apply(); }
-apply();
-
-/* ---------- product modal ---------- */
-const overlay = document.getElementById('overlay');
-let cur = null;
-grid.addEventListener('click', e=>{
-  const card = e.target.closest('.pcard'); if(!card) return;
-  openProduct(CAT[+card.dataset.i]);
-});
-function openProduct(p){
-  cur = p;
-  document.getElementById('mbrand').textContent = p.b;
-  document.getElementById('mname').textContent = p.n;
-  document.getElementById('mcat').textContent = p.c.toLowerCase();
-  const im = document.getElementById('mimgEl');
-  if (p.i){ im.src = `${p.i}${p.i.includes('?')?'&':'?'}width=800`; im.style.display=''; }
-  else im.style.display='none';
-  const sz = document.getElementById('msizes'); sz.innerHTML='';
-  p.v.forEach((v,k)=>{
-    const b = document.createElement('button');
-    b.className = 'size'+(v.a?'':' soldout');
-    b.textContent = v.s;
-    b.onclick = ()=> selectSize(k);
-    sz.appendChild(b);
-  });
-  const firstOk = p.v.findIndex(v=>v.a);
-  selectSize(firstOk === -1 ? 0 : firstOk);
-  overlay.classList.add('open');
-  document.body.style.overflow='hidden';
-}
-function selectSize(k){
-  const v = cur.v[k];
-  document.querySelectorAll('#msizes .size').forEach((b,i)=>b.classList.toggle('on', i===k));
-  document.getElementById('mprice').innerHTML = fmt(v.p) + `<small>${v.s}</small>`;
-  const av = document.getElementById('mavail');
-  av.textContent = v.a ? '● Disponibile — spedizione gratuita sopra 59€' : '● Al momento esaurito in questo formato';
-  av.className = v.a ? 'ok' : 'ko';
-  const url = `https://caveauprofumeriaartistica.com/products/${cur.h}`;
-  document.getElementById('mbuy').href = url;
-  document.getElementById('mwa').href =
-    `https://wa.me/393923943218?text=${encodeURIComponent(`Ciao! Vorrei informazioni su ${cur.n} (${v.s}) — ${fmt(v.p)}`)}`;
-}
-function closeModal(){ overlay.classList.remove('open'); document.body.style.overflow=''; }
-document.getElementById('mclose').onclick = closeModal;
-overlay.addEventListener('click', e=>{ if(e.target===overlay) closeModal(); });
-addEventListener('keydown', e=>{ if(e.key==='Escape') closeModal(); });
 
 /* ---------- promo bar rotation ---------- */
 const pmsgs = document.querySelectorAll('#promobar .pmsg');
