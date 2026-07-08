@@ -29,7 +29,8 @@ body{background:var(--parchment);color:var(--ink);font-family:var(--sans);font-s
 #veil{position:fixed;inset:0;background:var(--parchment);z-index:200;display:flex;flex-direction:column;
   align-items:center;justify-content:center;gap:18px;transition:opacity .7s ease,visibility .7s}
 #veil.off{opacity:0;visibility:hidden}
-#veil .vlogo{font-family:var(--display);font-weight:700;font-size:clamp(34px,5vw,54px);letter-spacing:.02em;color:var(--ink)}
+#veil .vlogo{display:flex;align-items:center}
+#veil .vlogo img{height:clamp(40px,7vw,64px);width:auto;display:block}
 #veil .vbar{width:160px;height:1px;background:rgba(0,0,0,.15);overflow:hidden}
 #veil .vbar i{display:block;height:100%;width:40%;background:var(--ink);animation:sweep 1.2s infinite}
 @keyframes sweep{0%{transform:translateX(-100%)}100%{transform:translateX(250%)}}
@@ -384,7 +385,7 @@ footer{position:relative;z-index:10;background:var(--night);border-top:1px solid
 <body>
 
 <div id="veil">
-  <div class="vlogo">CAVEAU</div>
+  <div class="vlogo"><img src="assets/logo-caveau.png" alt="Caveau"></div>
   <div class="vbar"><i></i></div>
 </div>
 
@@ -460,7 +461,7 @@ footer{position:relative;z-index:10;background:var(--night);border-top:1px solid
     <div class="eyebrow">Offerte esclusive</div>
     <h3>Il <i>10%</i> sul tuo primo ordine</h3>
     <p>Iscriviti alla newsletter di Caveau: anteprime sulle nuove maison, promozioni riservate e novità dal caveau, direttamente nella tua casella.</p>
-    <a class="nl-cta" href="https://caveauprofumeriaartistica.com/" target="_blank" rel="noopener">Iscriviti sul sito ufficiale</a>
+    <a class="nl-cta" href="https://wa.me/393923943218?text=Ciao!%20Vorrei%20iscrivermi%20alla%20newsletter%20Caveau%20e%20ricevere%20il%2010%25%20sul%20primo%20ordine" target="_blank" rel="noopener">Iscriviti su WhatsApp</a>
   </div>
 </section>
 
@@ -519,7 +520,7 @@ footer{position:relative;z-index:10;background:var(--night);border-top:1px solid
         <li><a href="catalogo.html">Catalogo profumi</a></li>
         <li><a href="catalogo.html?c=6">Set Regalo</a></li>
         <li><a href="maison.html">Il nostro Caveau</a></li>
-        <li><a href="https://caveauprofumeriaartistica.com" target="_blank" rel="noopener">Sito ufficiale</a></li>
+        <li><a href="index.html">Home</a></li>
       </ul>
     </div>
     <div>
